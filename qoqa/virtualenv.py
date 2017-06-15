@@ -32,7 +32,8 @@ class ExtendVenv(venv.EnvBuilder):
 
     def _startproject(self, context):
         """
-        create a new django project
+        Create a new django project
+        By using a settings.py template file
         """
         dj_admin_script = os.path.join(context.bin_path, 'django-admin')
         print("initializing django project")

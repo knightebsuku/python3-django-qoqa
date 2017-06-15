@@ -1,57 +1,17 @@
 import configparser
+import random
+import string
+import os
+
+from . import virtualenv
+from . import database as db
 
 INIT_PROJECT_CONFIG = {}
 
 
-def development_postgresql():
-    """
-    Setup development configurations for postgresql database
-    """
-    host = input('Database Host: ')
-    name = input('Database Name: ')
-    user = input('Database User: ')
-    password = input("Database Password: ")
-    port = input('Database Port: ')
-    if '' in [host, name, user, password, port]:
-        print("Please enter all database details")
-        development_postgresql()
-    else:
-        INIT_PROJECT_CONFIG['DEV_DB'] = {
-            'DATABASE': 'postgresql',
-            'HOST': host,
-            'NAME': name,
-            'USER': user,
-            'PASSWORD': password,
-            'PORT': port,
-        }
-
-
-def production_postgresql():
-    """
-    Setup Production configurations for postgresql database
-    """
-    host = input('Database Host: ')
-    name = input('Database Name: ')
-    user = input('Database User: ')
-    password = input("Database Password: ")
-    port = input('Database Port: ')
-    if '' in [host, name, user, password, port]:
-        print("Please enter all database details")
-        development_postgresql()
-    else:
-        INIT_PROJECT_CONFIG['PROD_DB'] = {
-            'DATABASE': 'postgresql',
-            'HOST': host,
-            'NAME': name,
-            'USER': user,
-            'PASSWORD': password,
-            'PORT': port,
-        }
-
-
 def project_name():
     name = input("Project Name: ")
-    if name == "":
+    if name == '':
         print("Please enter a project name")
         project_name()
     else:
@@ -59,6 +19,9 @@ def project_name():
 
 
 def database():
+    """
+    Setup datbase settings
+    """
     dev_db = input("Development Database[sqlite]: ")
     if dev_db == '':
         dev_db = 'sqlite'
@@ -67,7 +30,7 @@ def database():
             'name': 'development_db.sqlite3'
         }
     elif dev_db == 'postgresql':
-        development_postgresql()
+        db.development_postgresql()
 
     prod_db = input("Production Database[sqlite]: ")
     if prod_db == '':
@@ -77,8 +40,32 @@ def database():
             'name': 'production_db.sqlite3'
         }
     elif prod_db == 'postgresql':
-        production_postgresql()
+        db.production_postgresql()
     print("Database settings confugured")
+
+
+def staticfiles():
+    """
+    Handling static files in django
+    """
+    static = input("Static File handling[whitenoise]: ")
+    if static == '':
+        static = 'whitenoise'
+        INIT_PROJECT_CONFIG['STATIC'] = 'whitenoise'
+    else:
+        INIT_PROJECT_CONFIG['STATIC'] = 'other'
+        print('Nothing to do')
+
+
+def generate_key():
+    """
+    Generate Secret key for django
+    """
+    key = ''.join([random.SystemRandom().choice(string.ascii_letters +
+                                                string.digits +
+                                                string.punctuation)
+                   for _ in range(50)])
+    INIT_PROJECT_CONFIG['KEY'] = key
 
 
 def create_config():
@@ -100,12 +87,16 @@ def create_config():
     print('Configuration file has been created')
 
 
-def startproject():
+def project():
     """
     Launch interactive console
     """
     print("Configure New Django Project")
     project_name()
     database()
+    # staticfiles()
+    os.mkdir(INIT_PROJECT_CONFIG['PROJECT_NAME'])
+    os.chdir(INIT_PROJECT_CONFIG['PROJECT_NAME'])
+    virtualenv.create_virtualenv(INIT_PROJECT_CONFIG['PROJECT_NAME'])
+    generate_key()
     create_config()
-

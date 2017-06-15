@@ -1,4 +1,4 @@
-from . import start
+from . import qoqa
 
 
 def development_postgresql():
@@ -7,14 +7,14 @@ def development_postgresql():
     """
     host = input('Database Host: ')
     name = input('Database Name: ')
+    port = input('Database Port: ')
     user = input('Database User: ')
     password = input("Database Password: ")
-    port = input('Database Port: ')
     if '' in [host, name, user, password, port]:
         print("Please enter all database details")
         development_postgresql()
     else:
-        start.INIT_PROJECT_CONFIG['DEV_DB'] = {
+        qoqa.INIT_PROJECT_CONFIG['DEV_DB'] = {
             'DATABASE': 'postgresql',
             'HOST': host,
             'NAME': name,
@@ -37,7 +37,7 @@ def production_postgresql():
         print("Please enter all database details")
         development_postgresql()
     else:
-        start.INIT_PROJECT_CONFIG['PROD_DB'] = {
+        qoqa.INIT_PROJECT_CONFIG['PROD_DB'] = {
             'DATABASE': 'postgresql',
             'HOST': host,
             'NAME': name,
