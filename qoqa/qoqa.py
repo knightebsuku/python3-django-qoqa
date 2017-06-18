@@ -22,39 +22,47 @@ def database():
     """
     Setup datbase settings
     """
-    dev_db = input("Development Database[sqlite]: ")
+    dev_db = input("Development Database[sqlite3]: ")
     if dev_db == '':
-        dev_db = 'sqlite'
+        dev_db = 'sqlite3'
         INIT_PROJECT_CONFIG['DEV_DB'] = {
             'Database': dev_db,
             'name': 'development_db.sqlite3'
         }
     elif dev_db == 'postgresql':
         db.development_postgresql()
+    else:
+        print("Unknown database, currently supported database are"
+              "sqlite3 and postgresql")
+        database()
 
-    prod_db = input("Production Database[sqlite]: ")
+    prod_db = input("Production Database[sqlite3]: ")
     if prod_db == '':
-        prod_db = 'sqlite'
+        prod_db = 'sqlite3'
         INIT_PROJECT_CONFIG['PROD_DB'] = {
             'Database': prod_db,
             'name': 'production_db.sqlite3'
         }
     elif prod_db == 'postgresql':
         db.production_postgresql()
-    print("Database settings confugured")
-
-
-def staticfiles():
-    """
-    Handling static files in django
-    """
-    static = input("Static File handling[whitenoise]: ")
-    if static == '':
-        static = 'whitenoise'
-        INIT_PROJECT_CONFIG['STATIC'] = 'whitenoise'
     else:
-        INIT_PROJECT_CONFIG['STATIC'] = 'other'
-        print('Nothing to do')
+        print("Unknown database, currently supported database are"
+              "sqlite3 and postgresql")
+        database()
+    print("Database settings configured")
+
+
+# def staticfiles():
+#     """
+#     Handling static files in django
+#     """
+#     static = input("Static File handling[whitenoise]: ")
+#     if static == '':
+#         static = 'whitenoise'
+#         INIT_PROJECT_CONFIG['STATIC'] = 'whitenoise'
+#     else:
+#         INIT_PROJECT_CONFIG['STATIC'] = 'other'
+#         print('Nothing to do')
 
 
 def generate_key():
@@ -65,7 +73,7 @@ def generate_key():
                                                 string.digits +
                                                 string.punctuation)
                    for _ in range(50)])
-    INIT_PROJECT_CONFIG['KEY'] = key
+    return key
 
 
 def create_config():
@@ -73,13 +81,16 @@ def create_config():
     Create configuration file for django project
     """
     print("Creating configuration file")
-    config = configparser.ConfigParser()
+    config = configparser.RawConfigParser()
     config['STATUS'] = {
-        'Prodcution': False
+        'Production': False
+    }
+    config['SECRET_KEY'] = {
+        'value': ''.join(generate_key())
     }
     dev = INIT_PROJECT_CONFIG['DEV_DB']
     prod = INIT_PROJECT_CONFIG['PROD_DB']
-    config['DEVELOPMENT_DATABSE'] = {k: v for k, v in dev.items()}
+    config['DEVELOPMENT_DATABASE'] = {k: v for k, v in dev.items()}
     config['PRODUCTION_DATABASE'] = {k: v for k, v in prod.items()}
     config['ALLOWED_HOSTS'] = {'Host': '127.0.0.1,locahost'}
     with open(INIT_PROJECT_CONFIG['PROJECT_NAME']+'.cfg', 'w') as project_file:
@@ -98,5 +109,5 @@ def project():
     os.mkdir(INIT_PROJECT_CONFIG['PROJECT_NAME'])
     os.chdir(INIT_PROJECT_CONFIG['PROJECT_NAME'])
     virtualenv.create_virtualenv(INIT_PROJECT_CONFIG['PROJECT_NAME'])
-    generate_key()
     create_config()
+    print(INIT_PROJECT_CONFIG['PROJECT_NAME'] + "has been setup")
