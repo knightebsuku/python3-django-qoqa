@@ -20,7 +20,7 @@ def project_name():
 
 def database():
     """
-    Setup datbase settings
+    Setup database settings
     """
     dev_db = input("Development Database[sqlite3]: ")
     if dev_db == '':
@@ -50,19 +50,6 @@ def database():
               "sqlite3 and postgresql")
         database()
     print("Database settings configured")
-
-
-# def staticfiles():
-#     """
-#     Handling static files in django
-#     """
-#     static = input("Static File handling[whitenoise]: ")
-#     if static == '':
-#         static = 'whitenoise'
-#         INIT_PROJECT_CONFIG['STATIC'] = 'whitenoise'
-#     else:
-#         INIT_PROJECT_CONFIG['STATIC'] = 'other'
-#         print('Nothing to do')
 
 
 def generate_key():
@@ -105,7 +92,6 @@ def project():
     print("Configure New Django Project")
     project_name()
     database()
-    # staticfiles()
     os.mkdir(INIT_PROJECT_CONFIG['PROJECT_NAME'])
     os.chdir(INIT_PROJECT_CONFIG['PROJECT_NAME'])
     virtualenv.create_virtualenv(INIT_PROJECT_CONFIG['PROJECT_NAME'])
