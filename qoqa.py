@@ -10,15 +10,13 @@ def main():
     Main Entry point for qoqa
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--new',
-                        help='Create new django project')
-    parser.add_argument('-b', '--build-project',
-                        help='Build django project')
+    parser.add_argument('--new', help='Create new django project')
+    parser.add_argument('--build', help='Build django project')
 
     args = parser.parse_args()
     if args.new:
         print("Starting new django project")
-    qoqa.project()
+        qoqa.new()
 
 
 if __name__ == '__main__':

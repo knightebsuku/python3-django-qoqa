@@ -48,7 +48,7 @@ class ExtendVenv(venv.EnvBuilder):
         os.chmod('manage.py', stat.S_IRWXU)
 
 
-def create_virtualenv(project_name):
+def create(project_name: str):
     """
     create new virtual environment
     """

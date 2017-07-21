@@ -9,49 +9,6 @@ from . import database as db
 INIT_PROJECT_CONFIG = {}
 
 
-def project_name():
-    name = input("Project Name: ")
-    if name == '':
-        print("Please enter a project name")
-        project_name()
-    else:
-        INIT_PROJECT_CONFIG['PROJECT_NAME'] = name
-
-
-def database():
-    """
-    Setup database settings
-    """
-    dev_db = input("Development Database[sqlite3]: ")
-    if dev_db == '':
-        dev_db = 'sqlite3'
-        INIT_PROJECT_CONFIG['DEV_DB'] = {
-            'Database': dev_db,
-            'name': 'development_db.sqlite3'
-        }
-    elif dev_db == 'postgresql':
-        db.development_postgresql()
-    else:
-        print("Unknown database, currently supported database are"
-              "sqlite3 and postgresql")
-        database()
-
-    prod_db = input("Production Database[sqlite3]: ")
-    if prod_db == '':
-        prod_db = 'sqlite3'
-        INIT_PROJECT_CONFIG['PROD_DB'] = {
-            'Database': prod_db,
-            'name': 'production_db.sqlite3'
-        }
-    elif prod_db == 'postgresql':
-        db.production_postgresql()
-    else:
-        print("Unknown database, currently supported database are"
-              "sqlite3 and postgresql")
-        database()
-    print("Database settings configured")
-
-
 def generate_key():
     """
     Generate Secret key for django
@@ -85,15 +42,14 @@ def create_config():
     print('Configuration file has been created')
 
 
-def project():
+def new(project_name: str):
     """
-    Launch interactive console
+    Launch interactive console and setup new project
     """
     print("Configure New Django Project")
-    project_name()
-    database()
-    os.mkdir(INIT_PROJECT_CONFIG['PROJECT_NAME'])
-    os.chdir(INIT_PROJECT_CONFIG['PROJECT_NAME'])
-    virtualenv.create_virtualenv(INIT_PROJECT_CONFIG['PROJECT_NAME'])
+    db.setup()
+    os.mkdir(project_name)
+    os.chdir(project_name)
+    virtualenv.create(project_name)
     create_config()
-    print(INIT_PROJECT_CONFIG['PROJECT_NAME'] + "has been setup")
+    print("Project {} has been setup".format(project_name))
