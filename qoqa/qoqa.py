@@ -5,6 +5,7 @@ import os
 
 from . import virtualenv
 from . import database as db
+from . import build
 
 INIT_PROJECT_CONFIG = {}
 
@@ -20,11 +21,11 @@ def generate_key():
     return key
 
 
-def create_config():
+def create_config(project_name: str):
     """
     Create configuration file for django project
     """
-    print("Creating configuration file")
+    print("[new] Creating configuration file")
     config = configparser.RawConfigParser()
     config['STATUS'] = {
         'Production': False
@@ -37,19 +38,34 @@ def create_config():
     config['DEVELOPMENT_DATABASE'] = {k: v for k, v in dev.items()}
     config['PRODUCTION_DATABASE'] = {k: v for k, v in prod.items()}
     config['ALLOWED_HOSTS'] = {'Host': '127.0.0.1,locahost'}
-    with open(INIT_PROJECT_CONFIG['PROJECT_NAME']+'.cfg', 'w') as project_file:
+    with open(project_name+'.cfg', 'w') as project_file:
         config.write(project_file)
-    print('Configuration file has been created')
+    print('[new] Configuration file has been created')
 
 
 def new(project_name: str):
     """
     Launch interactive console and setup new project
     """
-    print("Configure New Django Project")
+    print("[new] Configuring New Django Project")
     db.setup()
     os.mkdir(project_name)
     os.chdir(project_name)
     virtualenv.create(project_name)
-    create_config()
-    print("Project {} has been setup".format(project_name))
+    create_config(project_name)
+    print("[new] Project {} has been setup".format(project_name))
+
+
+def build_project():
+    """
+    Build current django project.
+    """
+    print("[build] checking debian directory")
+    if os.path.isdir('debian'):
+        pass
+    else:
+        print("[build] debian directory does not exists, creating one....")
+        build.debian()
+        build.python_setup_file()
+        build.requirements()
+        build.manifest()

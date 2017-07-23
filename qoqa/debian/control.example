@@ -1,0 +1,14 @@
+Source: $projectname
+Section: python
+Priority: extra
+Maintainer: user@email.com
+Build-Depends: debhelper (>= 9), python3.5,python3-setuptools, dh-virtualenv (>= 0.8)
+Standards-Version: 3.9.5
+
+Package: $projectname
+Architecture: any
+Pre-Depends: dpkg (>= 1.16.1), python3.5, ${misc:Pre-Depends}
+Depends: ${python:Depends}, ${misc:Depends}
+Description: short description
+ Longer description about the project
+

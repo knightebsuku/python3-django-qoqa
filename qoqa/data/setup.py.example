@@ -1,0 +1,13 @@
+from setuptools import setup, find_packages
+
+
+setup(
+    name='$projectname',
+    version='0.1',
+    packages=find_packages(),
+    package_data={
+        
+    },
+    # This is the data specified in the MANIFEST.in
+    include_package_data=True,
+)
