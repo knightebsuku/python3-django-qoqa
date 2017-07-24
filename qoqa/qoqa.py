@@ -60,12 +60,30 @@ def build_project():
     """
     Build current django project.
     """
-    print("[build] checking debian directory")
+    print("[build] Checking that all requirements are met.")
+    if os.path.isfile('setup.py'):
+        print("[build] setup.py file exists")
+    else:
+        print("[build] setup.py file does not exist, creating.......")
+        build.python_setup_file()
+
+    if os.path.isfile('MANIFEST.in'):
+        print('[build] MANIFEST.in file exists')
+    else:
+        print("[build] MANIFEST.in has not been created, creating......")
+        build.manifest()
+
+    if os.path.isfile('requirements.txt'):
+        print("[build] requirements.txt file exists")
+    else:
+        print("[build] requirements.txt has not been created")
+        build.requirements()
+
     if os.path.isdir('debian'):
-        pass
+        print("[build] debian directory exists")
     else:
         print("[build] debian directory does not exists, creating one....")
         build.debian()
-        build.python_setup_file()
-        build.requirements()
-        build.manifest()
+
+    print('[build] building django project')
+    build.dpkg()

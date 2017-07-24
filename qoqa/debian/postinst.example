@@ -1,8 +1,0 @@
-#!/bin/bash
-
-cd /opt/venvs/$projectname
-
-mv lib/python3.5/site-packages/$projectname .
-chmod +x $projectname/manage.py
-
-exit 0

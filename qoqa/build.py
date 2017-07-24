@@ -2,28 +2,48 @@ import os
 import subprocess
 import shutil
 
+DATA_DIRECTORY = os.path.join(os.path.dirname(__file__), 'data')
+
+
+def create_changelog():
+    """
+    Create initial changelog file
+    """
+    try:
+        subprocess.run([
+            'dch',
+            '--create',
+            '--package', os.path.basename(os.getcwd()),
+            '--newversion', '0.1.0-1'
+        ])
+    except subprocess.CalledProcessError as error:
+        print("[build] Unable to create changelog file")
+        print("[build] {}".format(error))
+        exit()
+
 
 def debian():
     """
     Create debian directory with required files
     """
     os.mkdir('debian')
-    debian_data = os.path.join(os.path.dirname(__file__), 'debian')
+    debian_data = os.path.join(DATA_DIRECTORY, 'debian')
     rules_file = os.path.join(debian_data, 'rules.example')
     control_file = os.path.join(debian_data, 'control.example')
     compat_file = os.path.join(debian_data, 'compat.example')
     postint_file = os.path.join(debian_data, 'postinst.example')
-    changelog_file = os.path.join(debian_data, 'changelog.example')
     try:
         shutil.copyfile(rules_file, os.path.join('debian', 'rules'))
-        shutil.copyfile(compat_file, os.path.join('debian', 'control'))
-        shutil.copyfile(postint_file, os.path.join('debian', 'compat'))
-        shutil.copyfile(changelog_file, os.path.join('debian', 'postinst'))
-        shutil.copyfile(control_file, os.path.join('debian', 'changelog'))
-    except OSError:
-        print("[build] Unable to write to current directory")
-    except FileNotFoundError as e:
-        print("[build]")
+        shutil.copyfile(compat_file, os.path.join('debian', 'compat'))
+        shutil.copyfile(postint_file, os.path.join('debian', 'postinst'))
+        shutil.copyfile(control_file, os.path.join('debian', 'control'))
+        create_changelog()
+    except OSError as error:
+        print("[build] {}".format(error))
+        exit()
+    except FileNotFoundError as error:
+        print("[build] {}".format(error))
+        exit()
     else:
         template_files()
 
@@ -44,10 +64,9 @@ def template_files():
 
 def python_setup_file():
     """
-    Create setup.py file from template
+    Create setup.py file from template and copy to project directory
     """
-    data_directory = os.path.join(os.path.dirname(__file__), 'data')
-    setuppy_file = os.path.join(data_directory, 'setup.py.example')
+    setuppy_file = os.path.join(DATA_DIRECTORY, 'setup.py.example')
     with open(setuppy_file, 'r') as f:
         text = f.read().replace('$projectname', os.path.basename(os.getcwd()))
         with open(os.path.join(os.getcwd(), 'setup.py'), 'w') as setup_file:
@@ -59,13 +78,11 @@ def requirements():
     """
     Check whether requirements file exists
     """
-    if not os.path.isfile('requirements.txt'):
-        print("[build] requirements.txt file does not exist, "
-              "create one by activating the relevant emvironment and "
-              "typing the command\n"
-              "pip freeze > requirements.txt")
-    else:
-        print('[build] requirements.txt file exists')
+    print(
+          "[build] create one by activating the relevant virtual environment "
+          "and typing the command "
+          "pip freeze > requirements.txt")
+    exit()
 
 
 def manifest():
@@ -81,7 +98,18 @@ def manifest():
     print('[build] MANIFEST.in file created')
 
 
-def dpkg_package():
+def dpkg():
     """
     Start the build process
     """
+    try:
+        subprocess.run([
+            'dpkg-buildpackage',
+            '-us',
+            '-uc'
+        ])
+    except subprocess.CalledProcessError as error:
+        print("[build] unable to build project")
+        print(['[build] {}'.format(error)])
+        exit()
+    print("[build] django project built")

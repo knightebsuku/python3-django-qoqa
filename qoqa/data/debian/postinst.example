@@ -1,0 +1,27 @@
+#!/bin/bash
+
+cd /opt/venvs/$projectname
+
+mv lib/python3.5/site-packages/$projectname .
+chmod +x $projectname/manage.py
+rm $projectname/__init__.py
+
+# Create a new user called webapp if none exists
+# Change directory ownership to the newly created user
+
+# Create gunicorn_service file for systemd
+# Activate gunicorn unit file
+
+# swicth to that user
+
+
+# Activate Virtualenv
+#source $projectname/bin/activate
+
+
+# Perform database migrations
+#./$projectname/manage.py makemigrations
+#./$projectname/manage.py migrate
+
+
+exit 0
