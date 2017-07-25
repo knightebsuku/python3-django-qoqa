@@ -17,8 +17,8 @@ def create_changelog():
             '--newversion', '0.1.0-1'
         ])
     except subprocess.CalledProcessError as error:
-        print("[build] Unable to create changelog file")
-        print("[build] {}".format(error))
+        print("[qoqa] Unable to create changelog file")
+        print("[qoqa] {}".format(error))
         exit()
 
 
@@ -32,17 +32,23 @@ def debian():
     control_file = os.path.join(debian_data, 'control.example')
     compat_file = os.path.join(debian_data, 'compat.example')
     postint_file = os.path.join(debian_data, 'postinst.example')
+    postrm_file = os.path.join(debian_data, 'postrm.example')
+    service_file = os.path.join(debian_data, 'gunicorn.example')
     try:
+        project_name = os.path.basename(os.getcwd())
         shutil.copyfile(rules_file, os.path.join('debian', 'rules'))
         shutil.copyfile(compat_file, os.path.join('debian', 'compat'))
         shutil.copyfile(postint_file, os.path.join('debian', 'postinst'))
         shutil.copyfile(control_file, os.path.join('debian', 'control'))
+        shutil.copyfile(postrm_file, os.path.join('debian', 'postrm'))
+        shutil.copyfile(service_file, os.path.join('debian',
+                                                   project_name+'.service'))
         create_changelog()
     except OSError as error:
-        print("[build] {}".format(error))
+        print("[qoqa] {}".format(error))
         exit()
     except FileNotFoundError as error:
-        print("[build] {}".format(error))
+        print("[qoqa] {}".format(error))
         exit()
     else:
         template_files()
@@ -59,7 +65,7 @@ def template_files():
             f.seek(0)
             f.truncate()
             f.write(text)
-    print("[build] debian directory setup")
+    print("[qoqa] debian directory setup")
 
 
 def python_setup_file():
@@ -71,7 +77,7 @@ def python_setup_file():
         text = f.read().replace('$projectname', os.path.basename(os.getcwd()))
         with open(os.path.join(os.getcwd(), 'setup.py'), 'w') as setup_file:
             setup_file.write(text)
-    print('[build] setup.py file created')
+    print('[qoqa] setup.py file created')
 
 
 def requirements():
@@ -79,7 +85,7 @@ def requirements():
     Check whether requirements file exists
     """
     print(
-          "[build] create one by activating the relevant virtual environment "
+          "[qoqa] create one by activating the relevant virtual environment "
           "and typing the command "
           "pip freeze > requirements.txt")
     exit()
@@ -95,7 +101,7 @@ def manifest():
         text = f.read().replace('$projectname', os.path.basename(os.getcwd()))
         with open(os.path.join(os.getcwd(), 'MANIFEST.in'), 'w') as manifest:
             manifest.write(text)
-    print('[build] MANIFEST.in file created')
+    print('[qoqa] MANIFEST.in file created')
 
 
 def dpkg():
@@ -109,7 +115,7 @@ def dpkg():
             '-uc'
         ])
     except subprocess.CalledProcessError as error:
-        print("[build] unable to build project")
-        print(['[build] {}'.format(error)])
+        print("[qoqa] unable to build project")
+        print(['[qoqa] {}'.format(error)])
         exit()
-    print("[build] django project built")
+    print("[qoqa] django project built")

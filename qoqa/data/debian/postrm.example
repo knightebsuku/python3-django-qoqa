@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Completely remove the django application
+
+rm -rf /opt/venvs/$projectname
+
+
+exit 0

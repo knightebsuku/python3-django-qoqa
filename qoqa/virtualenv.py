@@ -47,8 +47,11 @@ class ExtendVenv(venv.EnvBuilder):
             'startproject',
             '--template='+template_zip,
             self._project_name])
+        
         print("[new] django project directory created")
         os.chdir(self._project_name)
+        with open('__init__.py', 'a'):
+            pass
         os.chmod('manage.py', stat.S_IRWXU)
 
 

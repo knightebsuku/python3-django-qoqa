@@ -2,24 +2,48 @@
 
 cd /opt/venvs/$projectname
 
+# Move application to top level project directory
 mv lib/python3.5/site-packages/$projectname .
 chmod +x $projectname/manage.py
-rm $projectname/__init__.py
 
-# Create a new user called webapp if none exists
-# Change directory ownership to the newly created user
+#Rename .cfg so that django/settings.py can read it
+mv $projectname/production.cfg $projectname/$projectname.cfg
+
+#Cleanup
+rm $projectname/__init__.py
+rm -rf $projectname/__pycache__/
+
+
+# Create logs directory
+mkdir /opt/venvs/$projectname/logs
+
+
+# Create user webapp and change project permissions to webapp user
+adduser --disabled-password --gecos "" webapp
+chown -R webapp:webapp /opt/venvs/$projectname
 
 # Create gunicorn_service file for systemd
-# Activate gunicorn unit file
+cp /opt/venvs/$projectname/$projectname/conf/$projectname.service /etc/systemd/system/$projectname.service
 
-# swicth to that user
+
+
+# switch to webapp user
+su webapp
 
 
 # Activate Virtualenv
-#source $projectname/bin/activate
+source /opt/venvs/$projectname/bin/activate
+
+# Run django collectstatic
+cd /opt/venvs/$projectname/$projectname
+./manage.py collectstatic --noinput
+
+# Leave Virtualenv
+deactivate
 
 
 # Perform database migrations
+# Maybe not such a good idea to automatically run migrations??
 #./$projectname/manage.py makemigrations
 #./$projectname/manage.py migrate
 

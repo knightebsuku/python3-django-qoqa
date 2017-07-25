@@ -1,0 +1,11 @@
+[Unit]
+Description= $projectname gunicorn daemon
+After=network.target
+
+[Service]
+User=webapp
+WorkingDirectory=/opt/venvs/$projectname/$projectname
+ExecStart=/opt/venvs/$projectname/bin/gunicorn -b 0.0.0.0:8000 --workers 3 $projectname.wsgi:application --log-level=info -log-file=/opt/venvs/$projectname/logs/gunicorn.log
+
+[Install]
+WantedBy=multi-user.target

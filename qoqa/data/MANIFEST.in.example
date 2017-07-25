@@ -1,1 +1,1 @@
-include $projectname/$projectname.cfg
+include $projectname/production.cfg
