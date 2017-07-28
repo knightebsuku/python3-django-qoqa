@@ -14,15 +14,15 @@ def main():
                                      "build the django project")
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--new', help='Create new django project')
-    group.add_argument('--prepare', help='perform project checks')
+    group.add_argument('--build', help='setup project for next release')
     group.add_argument('--release', help='build .deb file of project')
     args = parser.parse_args()
 
     if args.new:
         print("Starting new django project")
         qoqa.new(args.new)
-    elif args.prepare:
-        qoqa.prepare()
+    elif args.build:
+        qoqa.new_build(args.build)
     elif args.release:
         qoqa.release()
 

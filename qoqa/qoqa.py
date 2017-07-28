@@ -2,6 +2,7 @@ import configparser
 import random
 import string
 import os
+import re
 
 from . import virtualenv
 from . import database as db
@@ -75,10 +76,14 @@ def new(project_name: str):
     print("[qoqa] Project {} has been setup".format(project_name))
 
 
-def prepare():
+def new_build(version: str):
     """
     Check to make sure that all required files for building are present
     """
+    if not re.match('[\d.]+', version):
+        print('[qoqa] illformated version number')
+        exit()
+        
     print("[prepare] Checking that all requirements are met.")
     if os.path.isfile('setup.py'):
         print("[qoqa] setup.py file exists")
@@ -99,10 +104,11 @@ def prepare():
         build.requirements()
 
     if os.path.isdir('debian'):
-        print("[qoqa] debian directory exists")
+        print("[qoqa] debian directory exists, updating version")
+        build.update_changelog(version)
     else:
         print("[qoqa] debian directory does not exists, creating one....")
-        build.debian()
+        build.debian(version)
     print("[qoqa] Project ready to be built")
 
 

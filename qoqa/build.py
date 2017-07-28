@@ -5,24 +5,39 @@ import shutil
 DATA_DIRECTORY = os.path.join(os.path.dirname(__file__), 'data')
 
 
-def create_changelog():
+def update_changelog(version: str):
     """
-    Create initial changelog file
+    Update changelog file with new version
     """
     try:
         subprocess.run([
             'dch',
-            '--create',
-            '--package', os.path.basename(os.getcwd()),
-            '--newversion', '0.1.0-1'
+            '--newversion', version
         ])
     except subprocess.CalledProcessError as error:
-        print("[qoqa] Unable to create changelog file")
-        print("[qoqa] {}".format(error))
+        print('[qoqa] unable to update version')
+        print('[qoqa] {}'.format(error))
         exit()
 
 
-def debian():
+def create_changelog(version: str):
+    """
+    Create initial changelog file
+    """
+    try:
+            subprocess.run([
+                'dch',
+                '--create',
+                '--package', os.path.basename(os.getcwd()),
+                '--newversion', version
+            ])
+    except subprocess.CalledProcessError as error:
+            print("[qoqa] Unable to create changelog file")
+            print("[qoqa] {}".format(error))
+            exit()
+
+
+def debian(version: str):
     """
     Create debian directory with required files
     """
@@ -43,7 +58,7 @@ def debian():
         shutil.copyfile(postrm_file, os.path.join('debian', 'postrm'))
         shutil.copyfile(service_file, os.path.join('debian',
                                                    project_name+'.service'))
-        create_changelog()
+        create_changelog(version)
     except OSError as error:
         print("[qoqa] {}".format(error))
         exit()

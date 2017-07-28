@@ -17,7 +17,7 @@ class ExtendVenv(venv.EnvBuilder):
 
     def post_setup(self, context):
         """
-        install files from pip
+        install default applications
         """
         os.environ['VIRTUAL_ENV'] = context.env_dir
         pip = os.path.join(context.bin_path, 'pip')

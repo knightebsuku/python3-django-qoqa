@@ -5,7 +5,7 @@ def setup():
     """
     Configure database details
     """
-    dev_db = input("Development Database[sqlite3]:")
+    dev_db = input("Development Database[sqlite3]: ")
     if dev_db == '' or dev_db == 'sqlite3':
         qoqa.INIT_PROJECT_CONFIG['DEV_DB'] = {
             'DATABASE': 'sqlite3',
@@ -16,7 +16,7 @@ def setup():
     else:
         print("Unknown database or database is not supported")
         setup()
-    prod_db = input("Production Database[sqlite3]")
+    prod_db = input("Production Database[sqlite3]: ")
     if prod_db == '' or prod_db == 'sqlite3':
         qoqa.INIT_PROJECT_CONFIG['PROD_DB'] = {
             'DATABASE': 'sqlite3',
