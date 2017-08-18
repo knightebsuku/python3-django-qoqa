@@ -12,7 +12,8 @@ def update_changelog(version: str):
     try:
         subprocess.run([
             'dch',
-            '--newversion', version
+            '--newversion',
+            version
         ])
     except subprocess.CalledProcessError as error:
         print('[qoqa] unable to update version')
@@ -47,7 +48,6 @@ def debian(version: str):
     control_file = os.path.join(debian_data, 'control.example')
     compat_file = os.path.join(debian_data, 'compat.example')
     postint_file = os.path.join(debian_data, 'postinst.example')
-    postrm_file = os.path.join(debian_data, 'postrm.example')
     service_file = os.path.join(debian_data, 'gunicorn.example')
     try:
         project_name = os.path.basename(os.getcwd())
@@ -55,7 +55,6 @@ def debian(version: str):
         shutil.copyfile(compat_file, os.path.join('debian', 'compat'))
         shutil.copyfile(postint_file, os.path.join('debian', 'postinst'))
         shutil.copyfile(control_file, os.path.join('debian', 'control'))
-        shutil.copyfile(postrm_file, os.path.join('debian', 'postrm'))
         shutil.copyfile(service_file, os.path.join('debian',
                                                    project_name+'.service'))
         create_changelog(version)
@@ -123,6 +122,15 @@ def dpkg():
     """
     Start the build process
     """
+    try:
+        subprocess.run([
+            'dch',
+            '-r'
+        ])
+    except subprocess.CalledProcessError as error:
+        print("[qoqa] unable to release project")
+        print("[qoqa] {}".format(error))
+        exit()
     try:
         subprocess.run([
             'dpkg-buildpackage',

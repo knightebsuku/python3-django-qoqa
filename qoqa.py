@@ -19,12 +19,11 @@ def main():
     args = parser.parse_args()
 
     if args.new:
-        print("Starting new django project")
         qoqa.new(args.new)
     elif args.build:
         qoqa.new_build(args.build)
     elif args.release:
-        qoqa.release()
+        qoqa.release(args.release)
 
 
 if __name__ == '__main__':
