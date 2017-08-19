@@ -7,6 +7,21 @@ qoqa is a command line application to help setup django projects and package the
 _This project is mainly targeting small to medium sized django projects.__
 
 
+#### Project dependencies
+* devsctipts, 
+* dpkg
+* dpkg-dev 
+* dh-virtualenv (>= 1.0)
+* python3.5
+* python3-venv
+* python3-setuptools
+* dh-python
+
+## Releases
+A packaged .deb file of qoqa can be found in the releases subdirectory
+
+
+
 We'll go through the usage of qoqa by creating a full django project, packaging and deploying it
 
 ## Creating a new Project
