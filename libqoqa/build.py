@@ -118,15 +118,16 @@ def manifest():
     print('[qoqa] MANIFEST.in file created')
 
 
-def dpkg():
+def dpkg(version):
     """
     Start the build process
     """
     try:
         subprocess.run([
             'dch',
-            '-r'
-        ])
+            '-r',
+            version
+        ], check=True)
     except subprocess.CalledProcessError as error:
         print("[qoqa] unable to release project")
         print("[qoqa] {}".format(error))
@@ -136,9 +137,9 @@ def dpkg():
             'dpkg-buildpackage',
             '-us',
             '-uc'
-        ])
+        ], check=True)
     except subprocess.CalledProcessError as error:
-        print("[qoqa] unable to build project")
+        print("[qoqa] unable to releaseproject")
         print(['[qoqa] {}'.format(error)])
         exit()
     print("[qoqa] django project built")

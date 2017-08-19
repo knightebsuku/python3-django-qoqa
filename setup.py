@@ -5,9 +5,9 @@ setup(
     name='python3-qoqa',
     version='0.1.0',
     packages=find_packages(),
-    scripts=['qoqa.py'],
+    scripts=['qoqa'],
     package_data={
-        'qoqa': [
+        'libqoqa': [
             'data/debian/*.example',
             'data/MANIFEST.in.example',
             'data/setup.py.example',

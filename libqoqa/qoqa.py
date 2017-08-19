@@ -36,7 +36,7 @@ def production_config(project_name: str):
     }
     db_conf = INIT_PROJECT_CONFIG['PROD_DB']
     config['PRODUCTION_DATABASE'] = {k: v for k, v in db_conf.items()}
-    config['ALLOWED_HOSTS'] = {'Host': '127.0.0.1,locahost'}
+    config['ALLOWED_HOSTS'] = {'Hosts': '127.0.0.1,localhost'}
     with open('production.cfg', 'w') as production_file:
         config.write(production_file)
     print("[qoqa] Configuration file for production created")
@@ -56,7 +56,7 @@ def development_config(project_name: str):
     }
     dev = INIT_PROJECT_CONFIG['DEV_DB']
     config['DEVELOPMENT_DATABASE'] = {k: v for k, v in dev.items()}
-    config['ALLOWED_HOSTS'] = {'Host': '127.0.0.1,locahost'}
+    config['ALLOWED_HOSTS'] = {'Hosts': '127.0.0.1,localhost'}
     with open(project_name+'.cfg', 'w') as project_file:
         config.write(project_file)
     print('[qoqa] Configuration file has been created')
@@ -78,12 +78,13 @@ def new(project_name: str):
 
 def new_build(version: str):
     """
-    Check to make sure that all required files for building are present
+    Check to make sure that all required files for building are present and
+    prepare next version
     """
     if not re.match('[\d.]+', version):
-        print('[qoqa] illformated version number')
+        print('[qoqa] incorrect version format')
         exit()
-        
+
     print("[prepare] Checking that all requirements are met.")
     if os.path.isfile('setup.py'):
         print("[qoqa] setup.py file exists")
@@ -112,9 +113,12 @@ def new_build(version: str):
     print("[qoqa] Project ready to be built")
 
 
-def release():
+def release(version):
     """
-    Build current django project.
+    Create .deb package.
     """
-    print('[qoqa] building django project')
-    build.dpkg()
+    if not re.match('[\d.]+', version):
+        print("[qoqa] Incorrect version format")
+        exit()
+    print('[qoqa] Creating .deb for django project')
+    build.dpkg(version)

@@ -2,7 +2,7 @@
 
 import argparse
 
-from qoqa import qoqa
+from libqoqa import qoqa
 
 
 def main():
