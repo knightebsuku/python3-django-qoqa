@@ -2,6 +2,7 @@ import venv
 import os
 import subprocess
 import stat
+import shutil
 
 from .build import DATA_DIRECTORY
 
@@ -38,6 +39,9 @@ class ExtendVenv(venv.EnvBuilder):
             print("[qoqa] gunicorn package installed")
         except subprocess.CalledProcessError as err:
             print("[qoqa] Unable to download pip files, cleaning up")
+            print("[qoqa] removing incomplete directory")
+            os.chdir("..")
+            shutil.rmtree(self._project_name)
             exit()
         else:
             self._startproject(context)

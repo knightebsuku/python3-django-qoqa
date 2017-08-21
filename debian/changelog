@@ -1,6 +1,7 @@
-python3-qoqa (0.1.0) unstable; urgency=low
+python3-qoqa (0.1.1) unstable; urgency=low
 
   * Initial public release
+  * Remove project directory if pip installation failes
 
  -- Lunga Mthembu  <stumenz.complex@gmail.com>  Fri, 01 Aug 2017 17:00:00 +0200
 
