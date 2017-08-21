@@ -67,6 +67,9 @@ def new(project_name: str):
     Launch interactive console and setup new project
     """
     print("[qoqa] Configuring New Django Project")
+    if os.path.isdir(project_name):
+        print("[qoqa] project directory already exists")
+        exit()
     db.setup()
     os.mkdir(project_name)
     os.chdir(project_name)
