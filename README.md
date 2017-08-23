@@ -17,9 +17,6 @@ _This project is mainly targeting small to medium sized django projects.__
 * python3-setuptools
 * dh-python
 
-## Releases
-A packaged .deb file of qoqa can be found in the releases subdirectory
-
 
 
 We'll go through the usage of qoqa by creating a full django project, packaging and deploying it
