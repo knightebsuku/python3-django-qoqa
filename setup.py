@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='python3-qoqa',
-    version='0.1.1',
+    version='0.2.0',
     packages=find_packages(),
     scripts=['qoqa'],
     package_data={

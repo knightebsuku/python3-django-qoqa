@@ -1,3 +1,9 @@
+python3-qoqa (0.2.0) UNRELEASED; urgency=medium
+
+  * Enable SSL settings
+
+ -- lunga <lunga@stumenz.complex@gmail.com>  Fri, 25 Aug 2017 11:29:24 +0200
+
 python3-qoqa (0.1.1) unstable; urgency=low
 
   * Initial public release

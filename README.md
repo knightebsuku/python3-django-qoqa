@@ -1,4 +1,4 @@
-# Python3-qoqa 0.1.1
+# Python3-qoqa 0.2.0
 
 qoqa is a command line application to help setup django projects and package them as debian(.deb) packages._
 
