@@ -51,4 +51,31 @@ adduser --disabled-password --gecos "" webapp
 chown -R webapp:webapp /opt/venvs/$projectname
 
 
+RUN_CERTBOT=true
+DOMAIN=$projectname
+if [ $RUN_CERTBOT = true ];
+then
+    echo "[qoqq] Checking if certbot is installed"
+    if type certbot &>/dev/null
+    then
+	echo "[qoqa] Certbot starting......."
+	echo "[qoqa] checking if domain certificate already exists"
+	if certbot certificates | grep $DOMAIN | grep -v grep &>/dev/null
+	then
+	    echo "[qoqa] Domin certificate exists, nothin to do"
+	else
+	    echo "[qoqa] Certificate for domain does not exists"
+	    echo "[qoqa] Creating new certificate for $DOMAIN"
+	    certbot certonly --standalone -d $projectname
+	fi
+    else
+	echo "[qoqa] Certbot not installed yet....please install"
+    fi
+    
+fi
+
+
+
+
+
 exit 0
