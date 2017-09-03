@@ -59,7 +59,7 @@ then
 fi
 
 
-RUN_CERTBOT=true
+RUN_CERTBOT=false
 DOMAIN=$projectname
 if [ $RUN_CERTBOT = true ];
 then

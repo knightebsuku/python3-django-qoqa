@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/opt/venvs/$projectname/$projectname
-ExecStart=/opt/venvs/$projectname/bin/gunicorn --bind 0.0.0.0:443 --workers 3 --log-level=info --log-file=/opt/venvs/$projectname/logs/gunicorn.log --certfile=/etc/letsencrypt/live/$projectname/cert.pem --keyfile=/etc/letsencrypt/live/$projectname/privkey.pem --ca-certs=/etc/letsencrypt/live/$projectname/chain.pem $projectname.wsgi
+ExecStart=/opt/venvs/$projectname/env/bin/start_gunicorn
 
 [Install]
 WantedBy=multi-user.target

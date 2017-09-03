@@ -1,1 +1,2 @@
 include $projectname/production.cfg
+include $projectname/start_gunicorn
