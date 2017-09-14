@@ -101,6 +101,12 @@ def new_build(version: str):
         print("[qoqa] MANIFEST.in has not been created, creating......")
         build.manifest()
 
+    if os.path.isfile('start_gunicorn'):
+        print('[qoqa] start_gunicorn file exists')
+    else:
+        print('[qoqa] Creating new start_gunicorn script')
+        build.gunicorn_file()
+
     if os.path.isfile('requirements.txt'):
         print("[qoqa] requirements.txt file exists")
     else:

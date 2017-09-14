@@ -94,6 +94,18 @@ def python_setup_file():
     print('[qoqa] setup.py file created')
 
 
+def gunicorn_file():
+    """
+    Create gunicorn file
+    """
+    gunicorn = os.path.join(DATA_DIRECTORY, 'start_gunicorn.example')
+    with open(gunicorn, 'r') as f:
+        text = f.read().replace('$projectname', os.path.basename(os.getcwd()))
+        with open(os.path.join(os.getcwd(), 'start_gunicorn'), 'w') as g_file:
+            g_file.write(text)
+    print('[qoqa] start_gunicorn file has being created')
+
+
 def requirements():
     """
     Check whether requirements file exists
