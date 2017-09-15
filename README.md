@@ -227,5 +227,5 @@ The application should now be running on 0.0.0.0:8000
 
 ##### Just two Notes
 
-* The application is served via [Gunicorn|(http://gunicorn.org/) and not Django's development server
+* The application is served via [Gunicorn](http://gunicorn.org/) and not Django's development server
 * [Whitenoise](http://whitenoise.evans.io/en/stable/) handles the static files
