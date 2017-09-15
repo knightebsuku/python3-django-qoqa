@@ -21,6 +21,9 @@ else
     
 fi
 
+#move start_gunicorn to env/bin directory
+mv $projectname/start_gunicorn env/bin/activate
+
 #Cleanup
 rm $projectname/__init__.py
 rm -rf $projectname/__pycache__/
