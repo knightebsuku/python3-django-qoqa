@@ -51,14 +51,14 @@ class ExtendVenv(venv.EnvBuilder):
         Create a new django project
         """
         dj_admin_script = os.path.join(context.bin_path, 'django-admin')
-        print("[new] initializing django project")
+        print("[qoqa] initializing django project")
         subprocess.run([
             dj_admin_script,
             'startproject',
             '--template='+template_zip,
             self._project_name])
 
-        print("[new] django project directory created")
+        print("[qoqa] django project directory created")
         os.chdir(self._project_name)
         with open('__init__.py', 'a'):
             pass
