@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/opt/venvs/$projectname/$projectname
-ExecStart=/opt/venvs/$projectname/env/bin/start_gunicorn
+ExecStart=/opt/venvs/$projectname/bin/start_gunicorn
 
 [Install]
 WantedBy=multi-user.target

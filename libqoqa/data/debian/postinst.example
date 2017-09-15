@@ -21,8 +21,9 @@ else
     
 fi
 
-#move start_gunicorn to env/bin directory
-mv $projectname/start_gunicorn env/bin/activate
+#move start_gunicorn to env/bin directory and make execuatble
+mv $projectname/start_gunicorn bin/
+chmod +x bin/start_gunicorn
 
 #Cleanup
 rm $projectname/__init__.py
