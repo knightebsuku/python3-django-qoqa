@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Qoqa - Lunga Mthembu</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Qoqa </a></h1>
+                <nav><ul>
+                    <li><a href="/category/project.html">Project</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/qoqa-031.html">Qoqa 0.3.1</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-09-20T00:00:00+02:00">
+                Published: Wed 20 September 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lunga-mthembu.html">Lunga Mthembu</a>
+        </address>
+<p>In <a href="/category/project.html">Project</a>.</p>
+
+</footer><!-- /.post-info --><h1>Motivation</h1>
+<p>I built this project to simplify the creation and packaging of django projects.
+When starting a django project the steps that the followed are usually the same for each project
+<em> Create virtualenv
+</em> Download the django and other packages
+<em> Configure the settings.py
+</em> Create a .cfg file so that the settings file can read it, the .cfg file usually contains the SECRET_KEY, ALLOWED_HOSTS etc</p>
+<p>When its time to deploy its usually involves git pushing and git pulling and then running collectstatic and migrate.</p>
+<h1>Solution</h1>
+<p>I decided to check if there would be a way to deploy using the package manager (apt), turns out there is an application called <a href="https://github.com/spotify/dh-virtualenv">dh-virtualenv</a>, created by the guys at <a href="https://www.spotify.com/">spotify</a> which allows you to package python virtual environments as .deb packages.</p>
+<p>So qoqa uses dh_virtualenv to create a .deb package of a django project.</p>
+<p>Lets go through qoqa by creating and packaging a django project.
+<a href="/qoqa-tutorial.html">Tutorial</a></p>
+<h1>Development</h1>
+<p>qoqa is still under development, but it is at a stage where you can create and django project and its environment and package the project as a .deb file.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/qoqa-tutorial.html" rel="bookmark"
+                           title="Permalink to Qoqa Tutorial">Qoqa Tutorial</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-09-20T00:00:00+02:00">
+                Published: Wed 20 September 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lunga-mthembu.html">Lunga Mthembu</a>
+        </address>
+<p>In <a href="/category/project.html">Project</a>.</p>
+
+</footer><!-- /.post-info -->                <h1>Setup</h1>
+<p>I've created a couple of <a href="https://github.com/ebsuku/python3-qoqa/releases">releases</a>, with the releases there will be a deb that that you can install.</p>
+<p>Here are the project (qoqa) dependencies</p>
+<ul>
+<li>devsctipts,</li>
+<li>dpkg</li>
+<li>dpkg-dev</li>
+<li>dh-virtualenv (&gt;= 1.0)</li>
+<li>python3.5</li>
+<li>python3-venv</li>
+<li>python3-setuptools</li>
+<li>dh-python</li>
+</ul>
+<h1>Fruit Project</h1>
+<p>So well be creating a django project called fruit with 2 …</p>
+                <a class="readmore" href="/qoqa-tutorial.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

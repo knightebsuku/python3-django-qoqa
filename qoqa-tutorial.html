@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Qoqa Tutorial</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Qoqa </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/project.html">Project</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/qoqa-tutorial.html" rel="bookmark"
+           title="Permalink to Qoqa Tutorial">Qoqa Tutorial</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-09-20T00:00:00+02:00">
+                Published: Wed 20 September 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lunga-mthembu.html">Lunga Mthembu</a>
+        </address>
+<p>In <a href="/category/project.html">Project</a>.</p>
+
+</footer><!-- /.post-info -->      <h1>Setup</h1>
+<p>I've created a couple of <a href="https://github.com/ebsuku/python3-qoqa/releases">releases</a>, with the releases there will be a deb that that you can install.</p>
+<p>Here are the project (qoqa) dependencies</p>
+<ul>
+<li>devsctipts,</li>
+<li>dpkg</li>
+<li>dpkg-dev</li>
+<li>dh-virtualenv (&gt;= 1.0)</li>
+<li>python3.5</li>
+<li>python3-venv</li>
+<li>python3-setuptools</li>
+<li>dh-python</li>
+</ul>
+<h1>Fruit Project</h1>
+<p>So well be creating a django project called fruit with 2 apps, apple and banana</p>
+<div class="highlight"><pre><span></span>    $qoqa --new fruit
+</pre></div>
+
+
+<p><strong>The project names needs to be lower case else Debian changelog will complain about an invalid package name</strong></p>
+<p>At this stage an interactive session will start asking questions about the database that will be used to development and production.</p>
+<p><strong>Only sqlite3 and Postgresql are currently supported</strong></p>
+<div class="highlight"><pre><span></span>    [qoqa] Configuring New Django Project
+    Development Database[sqlite3]: 
+    Production Database[sqlite3]:
+</pre></div>
+
+
+<p>The default database is sqlite3 for both development and production</p>
+<p>Once that is complete a few packages will be installed, namely:
+<em> Django 
+</em> Whitenoise
+<em> Gunicorn
+</em> Django-debug-toolbar</p>
+<p>A directory with the following file structure will be created.</p>
+<div class="highlight"><pre><span></span>fruit
+    env
+    fruit
+</pre></div>
+
+
+<p>The env directory houses all the virtual environment files.</p>
+<div class="highlight"><pre><span></span>env
+    bin
+    lib
+    etc......
+</pre></div>
+
+
+<p>The fruit subdirectory will contain the traditional django project structure with some additional files and modifications</p>
+<div class="highlight"><pre><span></span>fruit
+    fruit
+    fruit.cfg
+    init.py
+    manage.py
+    production.cfg
+</pre></div>
+
+
+<p>The fruit.cfg and the production.cfg file will contain some variables that will be used by django's settings.py file This is an example as to how the fruit.cfg file will look.</p>
+<div class="highlight"><pre><span></span>    [STATUS]
+    production = False
+
+    [SECRET_KEY]
+    value = &quot;$2[Qt8a_|j+kqF-2kdbn8ii4qn)?n8\gSXr$jHA)E[ga2]`uX
+
+    [DEVELOPMENT_DATABASE]
+    name = development_db.sqlite3
+    database = sqlite3
+
+    [ALLOWED_HOSTS]
+    hosts = 127.0.0.1,localhost
+</pre></div>
+
+
+<p>When the django project gets placed in a production environment, the production.cfg will will be renamed to fruit.cfg since that is what the fruit/settings.py file will be looking for.</p>
+<p><strong>I'm still pondering whether it would be a better to generate the SECRET_KEY when the project is being deployed for the first time rather then when the project is setup</strong></p>
+<p>The Modified fruit/settings.py is created via the <a href="https://docs.djangoproject.com/en/1.11/ref/django-admin/#django-admin-startproject">startproject template</a></p>
+<p>So lets create a couple of django applications via the manage.py file (Don't forget to activate your virtual environment)</p>
+<div class="highlight"><pre><span></span>    ./manage.py startapp apple
+    ./manage.py startapp banana
+</pre></div>
+
+
+<p>So now we have the following directory structure</p>
+<div class="highlight"><pre><span></span>    fruit
+        apple
+        banana
+        fruit
+        fruit.cfg
+        manage.py
+        production.cfg
+        init.py
+        start_gunicorn
+</pre></div>
+
+
+<p>So now we can continue on developing our project the usual way.</p>
+<h1>Building the Django Project</h1>
+<p>So now you are ready to build and release your django project.</p>
+<p>First we'll need create a requirements.txt file</p>
+<div class="highlight"><pre><span></span>    $pip freeze &gt; requirements.txt
+</pre></div>
+
+
+<p>This command needs to be run in the same directory as the projects env directory.</p>
+<div class="highlight"><pre><span></span>    $qoqa --build 0.1.0
+</pre></div>
+
+
+<p>The above command will generate the required files needed to begin the release process.</p>
+<p>If it's the first time running the command it will generate the following files and directories</p>
+<div class="highlight"><pre><span></span>    fruit
+        debian
+        MANIFEST.in
+        requirements.txt
+        setup.py
+</pre></div>
+
+
+<h1>Debian directory</h1>
+<p>The debian directory contains the following files</p>
+<div class="highlight"><pre><span></span>    changelog - contains documentation about all the changes made to the package.
+    compat - sets he compatibility level of the build.
+    control - contains details about the project eg: Descriptions, dependencies etc.
+    fruit.service - This is a systemd unit file that will run the django project as a service.
+    postinst - This file contains details about what should happen after a package has been installed
+    rules
+</pre></div>
+
+
+<p>If you want to read more about the debian directory and what type of files can be placed in here, you can read <a href="https://www.debian.org/doc/manuals/maint-guide/">this guide</a></p>
+<h1>Setup.py</h1>
+<p>This is how the file will look</p>
+<p>from setuptools import setup, find_packages</p>
+<div class="highlight"><pre><span></span>    setup(
+        name=&#39;fruit&#39;,
+        version=&#39;0.1.0&#39;,
+        packages=find_packages(),
+        package_data={
+
+        },
+        # This is the data specified in the MANIFEST.in
+        include_package_data=True,
+    )
+</pre></div>
+
+
+<p>The find_packages() function searches for all python packages that's why the init.py is there under the fruit directory.</p>
+<p>We are treating the entire django project as a python package, allowing for the apple and banana packages to fall under the fruit package.</p>
+<p>The package_data keyword argument is used to install other data files related to the package, so we'll be placing <em>.djhtml, </em>.css, and *.js files from our django applications.</p>
+<div class="highlight"><pre><span></span>    package_data = {
+        &#39;fruit&#39;: [
+            &#39;apple/static/apple/css/*.css&#39;,
+            &#39;apple/static/apple/js/*.js&#39;
+            &#39;apple/templates/apple/*.djhtml&#39;,
+            &#39;banana/templates/banana/*.djhtml&#39;,
+            &#39;banana/static/banana/css/*.css&#39;,
+            &#39;banana/static/banana/js/*.js&#39;
+            etc........
+
+        ]
+    }
+</pre></div>
+
+
+<p>More details about the setup.py file and configurations can be found in the setuptools <a href="http://setuptools.readthedocs.io/en/latest/setuptools.html">documentation</a></p>
+<h1>Releasing the django project</h1>
+<p>We are now ready to create a .deb file</p>
+<div class="highlight"><pre><span></span>    $qoqa --release 0.1.0
+</pre></div>
+
+
+<p>The debian/changelog file will open up allowing you to make any final changes. In the background, the above command runs</p>
+<div class="highlight"><pre><span></span>    dpkg-buildpackage -us -uc
+</pre></div>
+
+
+<p>The whole building process and .deb creation is created by <a href="https://github.com/spotify/dh-virtualenv">dh_virtualenv</a></p>
+<p>From the dh-virtualenv github page</p>
+<div class="highlight"><pre><span></span>    dh-virtualenv is a tool that aims to combine Debian packaging with self-contained virtualenv based Python deployments.
+</pre></div>
+
+
+<h1>Installing the .deb package</h1>
+<p>Once the build process is complete a fruit_0.1.0.deb file will be created.</p>
+<p>To install the package</p>
+<div class="highlight"><pre><span></span>    $sudo dpkg -i fruit_0.1.0.deb
+</pre></div>
+
+
+<p>This will install the package in</p>
+<p>/opt/venvs/fruit/</p>
+<p>To start the application</p>
+<div class="highlight"><pre><span></span>$systemctl start fruit
+</pre></div>
+
+
+<p>The application should now be running on 0.0.0.0:8000
+Just two Notes</p>
+<p><strong>The application is served via Gunicorn and not Django's development server</strong>
+<strong>Whitenoise handles the static files</strong></p>
+<p>Full documentation will be provided soon.....</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
