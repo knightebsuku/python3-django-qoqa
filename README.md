@@ -1,5 +1,7 @@
 # Python3-qoqa 0.3.1
 
+https://ebsuku.github.io/python3-qoqa/
+
 qoqa is a command line application to help setup django projects and package them as debian(.deb) packages._
 
 * Qoqa is a Zulu word which roughly translates to collect.
