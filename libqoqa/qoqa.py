@@ -121,6 +121,9 @@ def new_build(version: str):
         build.debian(version)
     print("[qoqa] Project ready to be built")
 
+    print("[qoqa] finding django apps and updating static files")
+    build.django_app_data()
+
 
 def release(version):
     """

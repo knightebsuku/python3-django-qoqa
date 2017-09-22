@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-
 setup(
     name='python3-qoqa',
     version='0.3.1',

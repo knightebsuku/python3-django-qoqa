@@ -1,6 +1,8 @@
+import io
 import os
 import subprocess
 import shutil
+
 
 DATA_DIRECTORY = os.path.join(os.path.dirname(__file__), 'data')
 
@@ -158,3 +160,38 @@ def dpkg(version):
         print(['[qoqa] {}'.format(error)])
         exit()
     print("[qoqa] django project built")
+
+
+def django_app_data():
+    """
+    Find all python packages within django project and treat them as a django app
+    and add them to setuptools package_data
+    """
+    valid_django_apps = []
+    project_directory = os.path.basename(os.getcwd())
+    apps = os.walk(os.path.basename(os.getcwd()))
+    app_folders = next(apps)[1]
+    for folder in app_folders:
+        if folder == project_directory:
+            continue
+        if os.path.isfile(os.path.join(project_directory,
+                                       folder, '__init__.py')):
+            print('[qoqa] found django app {}'.format(folder))
+            print('[qoqa] adding templates and static files')
+            valid_django_apps.append('{0}/templates/{0}/*.djhtml'.format(folder,))
+            valid_django_apps.append('{0}/static/{0}/css/*.css'.format(folder,))
+            valid_django_apps.append('{0}/static/{0}/js/*.js'.format(folder,))
+            valid_django_apps.append('{0}/static/{0}/img/*.png'.format(folder,))
+    if valid_django_apps:
+        package_data = {project_directory: valid_django_apps}
+        with open('setup.py', 'r+') as setup_file:
+            new_setup_file = io.StringIO()
+            for line in setup_file:
+                if line.startswith('PACKAGE_DATA'):
+                    new_setup_file.write('PACKAGE_DATA = {}\n\n'.
+                                         format(package_data))
+                else:
+                    new_setup_file.write(line)
+            setup_file.seek(0)
+            setup_file.write(new_setup_file.getvalue())
+            new_setup_file.close()
