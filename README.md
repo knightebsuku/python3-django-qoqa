@@ -1,4 +1,4 @@
-# Python3-qoqa 0.3.1
+# Python3-qoqa 0.4.0
 
 https://ebsuku.github.io/python3-qoqa/
 
