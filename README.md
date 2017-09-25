@@ -1,4 +1,4 @@
-# Python3-qoqa 0.4.0
+# Python3-qoqa 0.4.1
 
 https://ebsuku.github.io/python3-qoqa/
 
@@ -7,6 +7,11 @@ qoqa is a command line application to help setup django projects and package the
 * Qoqa is a Zulu word which roughly translates to collect.
 
 _This project is mainly targeting small to medium sized django projects.__
+
+
+# New Additions
+* qoqa will now automatically try and find django static files and place them in the setup.py file
+* Color coding output
 
 
 #### Project dependencies
