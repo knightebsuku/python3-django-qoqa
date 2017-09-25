@@ -1,10 +1,11 @@
-python3-qoqa (0.4.0) UNRELEASED; urgency=medium
+python3-qoqa (0.4.1) UNRELEASED; urgency=medium
 
   * Enable SSL settings
   * start gunicorn in virtualenv
-  * django static files auto populated in setuptool during build
+  * Autodiscovery of django static files
+  * color coding output
 
- -- lunga <lunga@complex>  Fri, 22 Sep 2017 15:50:03 +0200
+ -- lunga <lunga@complex>  Mon, 25 Sep 2017 15:08:54 +0200
 
 python3-qoqa (0.1.1) unstable; urgency=low
 

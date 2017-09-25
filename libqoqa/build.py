@@ -3,6 +3,8 @@ import os
 import subprocess
 import shutil
 
+from colorama import Fore, Style
+
 
 DATA_DIRECTORY = os.path.join(os.path.dirname(__file__), 'data')
 
@@ -18,9 +20,10 @@ def update_changelog(version: str):
             version
         ])
     except subprocess.CalledProcessError as error:
-        print('[qoqa] unable to update version')
-        print('[qoqa] {}'.format(error))
+        print(Fore.RED + '[qoqa] unable to update version')
+        print(Fore.RED + '[qoqa] {}'.format(error))
         exit()
+    print(Style.RESET_ALL)
 
 
 def create_changelog(version: str):
@@ -35,9 +38,10 @@ def create_changelog(version: str):
                 '--newversion', version
             ])
     except subprocess.CalledProcessError as error:
-            print("[qoqa] Unable to create changelog file")
-            print("[qoqa] {}".format(error))
+            print(Fore.RED + "[qoqa] Unable to create changelog file")
+            print(Fore.RED + "[qoqa] {}".format(error))
             exit()
+    print(Style.RESET_ALL)
 
 
 def debian(version: str):
@@ -61,13 +65,14 @@ def debian(version: str):
                                                    project_name+'.service'))
         create_changelog(version)
     except OSError as error:
-        print("[qoqa] {}".format(error))
+        print(Fore.RED + "[qoqa] {}".format(error))
         exit()
     except FileNotFoundError as error:
-        print("[qoqa] {}".format(error))
+        print(Fore.RED + "[qoqa] {}".format(error))
         exit()
     else:
         template_files()
+    print(Style.RESET_ALL)
 
 
 def template_files():
@@ -81,7 +86,8 @@ def template_files():
             f.seek(0)
             f.truncate()
             f.write(text)
-    print("[qoqa] debian directory setup")
+    print(Fore.GREEN + "[qoqa] debian directory setup")
+    print(Style.RESET_ALL)
 
 
 def python_setup_file():
@@ -93,7 +99,8 @@ def python_setup_file():
         text = f.read().replace('$projectname', os.path.basename(os.getcwd()))
         with open(os.path.join(os.getcwd(), 'setup.py'), 'w') as setup_file:
             setup_file.write(text)
-    print('[qoqa] setup.py file created')
+    print(Fore.GREEN + '[qoqa] setup.py file created')
+    print(Style.RESET_ALL)
 
 
 def gunicorn_file():
@@ -103,23 +110,30 @@ def gunicorn_file():
     project_directory = os.path.join(os.getcwd(),
                                      os.path.basename(os.getcwd()))
     gunicorn = os.path.join(DATA_DIRECTORY, 'start_gunicorn.example')
-    with open(gunicorn, 'r') as f:
-        text = f.read().replace('$projectname', os.path.basename(os.getcwd()))
-        with open(os.path.join(project_directory,
-                               'start_gunicorn'), 'w') as g_file:
-            g_file.write(text)
-    print('[qoqa] start_gunicorn file has being created')
+    try:
+        with open(gunicorn, 'r') as f:
+            text = f.read().replace('$projectname',
+                                    os.path.basename(os.getcwd()))
+            with open(os.path.join(project_directory,
+                                   'start_gunicorn'), 'w') as g_file:
+                g_file.write(text)
+        print(Fore.GREEN + '[qoqa] start_gunicorn file has being created')
+    except NotADirectoryError as error:
+        print(Fore.RED + '[qoqa] {}'.format(error))
+        exit()
+    print(Style.RESET_ALL)
 
 
 def requirements():
     """
     Check whether requirements file exists
     """
-    print(
-          "[qoqa] create one by activating the relevant virtual environment "
+    print(Fore.RED + "[qoqa] create one by activating the relevant"
+          "virtual environment "
           "and typing the command "
           "pip freeze > requirements.txt")
     exit()
+    print(Style.RESET_ALL)
 
 
 def manifest():
@@ -132,7 +146,8 @@ def manifest():
         text = f.read().replace('$projectname', os.path.basename(os.getcwd()))
         with open(os.path.join(os.getcwd(), 'MANIFEST.in'), 'w') as manifest:
             manifest.write(text)
-    print('[qoqa] MANIFEST.in file created')
+    print(Fore.GREEN + '[qoqa] MANIFEST.in file created')
+    print(Style.RESET_ALL)
 
 
 def dpkg(version):
@@ -146,8 +161,8 @@ def dpkg(version):
             version
         ], check=True)
     except subprocess.CalledProcessError as error:
-        print("[qoqa] unable to release project")
-        print("[qoqa] {}".format(error))
+        print(Fore.RED + "[qoqa] unable to release project")
+        print(Fore.RED + "[qoqa] {}".format(error))
         exit()
     try:
         subprocess.run([
@@ -156,10 +171,11 @@ def dpkg(version):
             '-uc'
         ], check=True)
     except subprocess.CalledProcessError as error:
-        print("[qoqa] unable to releaseproject")
-        print(['[qoqa] {}'.format(error)])
+        print(Fore.RED + "[qoqa] unable to releaseproject")
+        print(Fore.RED + '[qoqa] {}'.format(error))
         exit()
-    print("[qoqa] django project built")
+    print(Fore.GREEN + "[qoqa] django project built")
+    print(Style.RESET_ALL)
 
 
 def django_app_data():
@@ -176,8 +192,8 @@ def django_app_data():
             continue
         if os.path.isfile(os.path.join(project_directory,
                                        folder, '__init__.py')):
-            print('[qoqa] found django app {}'.format(folder))
-            print('[qoqa] adding templates and static files')
+            print(Fore.GREEN + '[qoqa] found django app {}'.format(folder))
+            print(Fore.GREEN + '[qoqa] adding templates and static files')
             valid_django_apps.append('{0}/templates/{0}/*.djhtml'.format(folder,))
             valid_django_apps.append('{0}/static/{0}/css/*.css'.format(folder,))
             valid_django_apps.append('{0}/static/{0}/js/*.js'.format(folder,))
@@ -195,3 +211,5 @@ def django_app_data():
             setup_file.seek(0)
             setup_file.write(new_setup_file.getvalue())
             new_setup_file.close()
+    print(Fore.GREEN + '[qoqa] collected and setup files')
+    print(Style.RESET_ALL)

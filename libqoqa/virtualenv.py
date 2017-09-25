@@ -5,6 +5,7 @@ import stat
 import shutil
 
 from .build import DATA_DIRECTORY
+from colorama import Fore
 
 
 template_zip = os.path.join(DATA_DIRECTORY, 'template.zip')
@@ -23,23 +24,23 @@ class ExtendVenv(venv.EnvBuilder):
         os.environ['VIRTUAL_ENV'] = context.env_dir
         pip = os.path.join(context.bin_path, 'pip')
         try:
-            print("[qoqa] Installing pip files: ")
-            print("[qoqa] Preparing to install django")
+            print(Fore.GREEN + "[qoqa] Installing pip files: ")
+            print(Fore.GREEN + "[qoqa] Preparing to install django")
             subprocess.run([pip, 'install', 'django'], check=True)
-            print("[qoqa] django package installed")
-            print('[qoqa] Preparing to install whitenoise')
+            print(Fore.GREEN + "[qoqa] django package installed")
+            print(Fore.GREEN + '[qoqa] Preparing to install whitenoise')
             subprocess.run([pip, 'install', 'whitenoise'], check=True)
-            print("[qoqa] whitenoise package installed")
-            print("[qoqa] Preparing to install django-debug-toolbar")
+            print(Fore.GREEN + "[qoqa] whitenoise package installed")
+            print(Fore.GREEN + "[qoqa] Preparing to install django-debug-toolbar")
             subprocess.run([pip, 'install', 'django-debug-toolbar'],
                            check=True)
-            print("[qoqa] django-debug-toolbar package installed")
-            print("[qoqa] Preparing into install gunicorn")
+            print(Fore.GREEN + "[qoqa] django-debug-toolbar package installed")
+            print(Fore.GREEN + "[qoqa] Preparing into install gunicorn")
             subprocess.run([pip, 'install', 'gunicorn'], check=True)
-            print("[qoqa] gunicorn package installed")
+            print(Fore.GREEN + "[qoqa] gunicorn package installed")
         except subprocess.CalledProcessError as err:
-            print("[qoqa] Unable to download pip files, cleaning up")
-            print("[qoqa] removing incomplete directory")
+            print(Fore.RED + "[qoqa] Unable to download pip files, cleaning up")
+            print(Fore.RED + "[qoqa] removing incomplete directory")
             os.chdir("..")
             shutil.rmtree(self._project_name)
             exit()
@@ -51,14 +52,14 @@ class ExtendVenv(venv.EnvBuilder):
         Create a new django project
         """
         dj_admin_script = os.path.join(context.bin_path, 'django-admin')
-        print("[qoqa] initializing django project")
+        print(Fore.GREEN + "[qoqa] initializing django project")
         subprocess.run([
             dj_admin_script,
             'startproject',
             '--template='+template_zip,
             self._project_name])
 
-        print("[qoqa] django project directory created")
+        print(Fore.GREEN + "[qoqa] django project directory created")
         os.chdir(self._project_name)
         with open('__init__.py', 'a'):
             pass
