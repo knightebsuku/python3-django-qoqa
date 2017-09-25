@@ -10,20 +10,20 @@ def main():
     Main Entry point for qoqa
     """
     parser = argparse.ArgumentParser(description="Qoqa is an application to"
-                                     "create a new django project and to"
-                                     "build the django project")
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('--new', help='Create new django project')
-    group.add_argument('--build', help='setup project for next release')
-    group.add_argument('--release', help='build .deb file of project')
+                                     " create a new django project and to"
+                                     " build the django project")
+    parser.add_argument('action', nargs=2, help='use new, build or release')
     args = parser.parse_args()
-
-    if args.new:
-        qoqa.new(args.new)
-    elif args.build:
-        qoqa.new_build(args.build)
-    elif args.release:
-        qoqa.release(args.release)
+    if args.action:
+        if args.action[0] == 'new':
+            qoqa.create(args.action[1])
+        elif args.action[0] == 'build':
+            qoqa.new_build(args.action[1])
+        elif args.action[0] == 'release':
+            qoqa.release(args.action[1])
+        else:
+            print('[qoqa] Unknown argument use either new, build or release')
+            exit()
 
 
 if __name__ == '__main__':

@@ -62,10 +62,13 @@ def development_config(project_name: str):
     print('[qoqa] Configuration file has been created')
 
 
-def new(project_name: str):
+def create(project_name: str):
     """
     Launch interactive console and setup new project
     """
+    if project_name in ['new', 'build', 'release']:
+        print('[qoqa] invalid project name: {}'.format(project_name))
+        exit()
     print("[qoqa] Configuring New Django Project")
     if os.path.isdir(project_name):
         print("[qoqa] project directory already exists")
@@ -81,13 +84,16 @@ def new(project_name: str):
 
 def new_build(version: str):
     """
-    Check to make sure that all required files for building are present and
-    prepare next version
+    Update project version and check that all required files are present
     """
     if not re.match('[\d.]+', version):
         print('[qoqa] incorrect version format')
         exit()
 
+    config = configparser.ConfigParser()
+    config['DJANGO_PROJECT_VERSION'] = {'Version': version}
+    with open('qoqa.cfg', 'w') as cfg:
+        config.write(cfg)
     print("[prepare] Checking that all requirements are met.")
     if os.path.isfile('setup.py'):
         print("[qoqa] setup.py file exists")
@@ -131,6 +137,11 @@ def release(version):
     """
     if not re.match('[\d.]+', version):
         print("[qoqa] Incorrect version format")
+        exit()
+    config = configparser.ConfigParser()
+    config.read('qoqa.cfg')
+    if version != config['DJANGO_PROJECT_VERSION']['Version']:
+        print("[qoqa] Build version and project version to not match")
         exit()
     print('[qoqa] Creating .deb for django project')
     build.dpkg(version)
