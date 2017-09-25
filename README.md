@@ -31,7 +31,7 @@ We'll go through the usage of qoqa by creating a full django project, packaging 
 ## Creating a new Project
 To create a new Django project the following command is used
 ```
-$qoqa --new fruit
+$qoqa new fruit
 ```
 The above command will launch an interactive session asking a few questions.
 
@@ -119,7 +119,7 @@ $pip freeze > requirements.txt
 _This command needs to be run in the same directory as the projects env directory._
 
 ```
-$qoqa --build 0.1.0
+$qoqa build 0.1.0
 ```
 _This command needs to be run in the same directory as the env directory_
 
@@ -197,7 +197,7 @@ More details about the setup.py file and configurations can be found [here](http
 We are now ready to create a .deb file
 
 ```
-$qoqa --release 0.1.0
+$qoqa release 0.1.0
 ```
 The debian/changelog file will open up allowing you to make any final changes.
 In the background, the above runs 
