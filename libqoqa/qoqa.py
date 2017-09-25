@@ -4,6 +4,8 @@ import string
 import os
 import re
 
+from colorama import Fore
+
 from . import virtualenv
 from . import database as db
 from . import build
@@ -26,7 +28,7 @@ def production_config(project_name: str):
     """
     Create production.cfg file
     """
-    print("[qoqa] Creating production.cfg file")
+    print(Fore.GREEN + "[qoqa] Creating production.cfg file")
     config = configparser.RawConfigParser()
     config['STATUS'] = {
         'Production': True
@@ -39,14 +41,14 @@ def production_config(project_name: str):
     config['ALLOWED_HOSTS'] = {'Hosts': '127.0.0.1,localhost'}
     with open('production.cfg', 'w') as production_file:
         config.write(production_file)
-    print("[qoqa] Configuration file for production created")
+    print(Fore.GREEN + "[qoqa] Configuration file for production created")
 
 
 def development_config(project_name: str):
     """
     Create configuration file for django project
     """
-    print("[qoqa] Creating configuration file")
+    print(Fore.GREEN + "[qoqa] Creating configuration file")
     config = configparser.RawConfigParser()
     config['STATUS'] = {
         'Production': False
@@ -59,7 +61,7 @@ def development_config(project_name: str):
     config['ALLOWED_HOSTS'] = {'Hosts': '127.0.0.1,localhost'}
     with open(project_name+'.cfg', 'w') as project_file:
         config.write(project_file)
-    print('[qoqa] Configuration file has been created')
+    print(Fore.GREEN + '[qoqa] Configuration file has been created')
 
 
 def create(project_name: str):
@@ -67,11 +69,11 @@ def create(project_name: str):
     Launch interactive console and setup new project
     """
     if project_name in ['new', 'build', 'release']:
-        print('[qoqa] invalid project name: {}'.format(project_name))
+        print(Fore.RED + '[qoqa] invalid project name: {}'.format(project_name))
         exit()
     print("[qoqa] Configuring New Django Project")
     if os.path.isdir(project_name):
-        print("[qoqa] project directory already exists")
+        print(Fore.RED + "[qoqa] project directory already exists")
         exit()
     db.setup()
     os.mkdir(project_name)
@@ -79,7 +81,7 @@ def create(project_name: str):
     virtualenv.create(project_name)
     development_config(project_name)
     production_config(project_name)
-    print("[qoqa] Project {} has been setup".format(project_name))
+    print(Fore.GREEN + "[qoqa] Project {} has been setup".format(project_name))
 
 
 def new_build(version: str):
@@ -87,47 +89,47 @@ def new_build(version: str):
     Update project version and check that all required files are present
     """
     if not re.match('[\d.]+', version):
-        print('[qoqa] incorrect version format')
+        print(Fore.RED + '[qoqa] incorrect version format')
         exit()
 
     config = configparser.ConfigParser()
     config['DJANGO_PROJECT_VERSION'] = {'Version': version}
     with open('qoqa.cfg', 'w') as cfg:
         config.write(cfg)
-    print("[prepare] Checking that all requirements are met.")
+    print(Fore.GREEN + "[qoqa] Checking that all requirements are met.")
     if os.path.isfile('setup.py'):
-        print("[qoqa] setup.py file exists")
+        print(Fore.GREEN + "[qoqa] setup.py file exists")
     else:
-        print("[qoqa] setup.py file does not exist, creating.......")
+        print(Fore.GREEN + "[qoqa] setup.py file does not exist, creating.")
         build.python_setup_file()
 
     if os.path.isfile('MANIFEST.in'):
-        print('[qoqa] MANIFEST.in file exists')
+        print(Fore.GREEN + '[qoqa] MANIFEST.in file exists')
     else:
-        print("[qoqa] MANIFEST.in has not been created, creating......")
+        print(Fore.GREEN + "[qoqa] MANIFEST.in has not been created, creating.")
         build.manifest()
 
     if os.path.isfile('start_gunicorn'):
-        print('[qoqa] start_gunicorn file exists')
+        print(Fore.GREEN + '[qoqa] start_gunicorn file exists')
     else:
-        print('[qoqa] Creating new start_gunicorn script')
+        print(Fore.GREEN + '[qoqa] Creating new start_gunicorn script')
         build.gunicorn_file()
 
     if os.path.isfile('requirements.txt'):
-        print("[qoqa] requirements.txt file exists")
+        print(Fore.GREEN + "[qoqa] requirements.txt file exists")
     else:
-        print("[qoqa] requirements.txt has not been created")
+        print(Fore.GREEN + "[qoqa] requirements.txt has not been created")
         build.requirements()
 
     if os.path.isdir('debian'):
-        print("[qoqa] debian directory exists, updating version")
+        print(Fore.GREEN + "[qoqa] debian directory exists, updating version")
         build.update_changelog(version)
     else:
-        print("[qoqa] debian directory does not exists, creating one....")
+        print(Fore.GREEN + "[qoqa] debian directory does not exist, creating one....")
         build.debian(version)
-    print("[qoqa] Project ready to be built")
+    print(Fore.GREEN + "[qoqa] Project ready to be built")
 
-    print("[qoqa] finding django apps and updating static files")
+    print(Fore.GREEN + "[qoqa] finding django apps and updating static files")
     build.django_app_data()
 
 
@@ -136,12 +138,13 @@ def release(version):
     Create .deb package.
     """
     if not re.match('[\d.]+', version):
-        print("[qoqa] Incorrect version format")
+        print(Fore.RED + "[qoqa] Incorrect version format")
         exit()
     config = configparser.ConfigParser()
     config.read('qoqa.cfg')
     if version != config['DJANGO_PROJECT_VERSION']['Version']:
-        print("[qoqa] Build version and project version to not match")
+        print(Fore.RED + "[qoqa] Build version and project version to not match")
         exit()
-    print('[qoqa] Creating .deb for django project')
+    print(Fore.GREEN + '[qoqa] Creating .deb for django project')
     build.dpkg(version)
+    print(Style.RESET_ALL)
