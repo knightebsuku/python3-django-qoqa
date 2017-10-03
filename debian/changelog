@@ -1,11 +1,13 @@
-python3-qoqa (0.4.1) UNRELEASED; urgency=medium
+python3-qoqa (0.4.2) UNRELEASED; urgency=medium
 
   * Enable SSL settings
   * start gunicorn in virtualenv
   * Autodiscovery of django static files
   * color coding output
+  * Add start_gunicorn to data files
+  * Remove manual resetting of colorama
 
- -- lunga <lunga@complex>  Mon, 25 Sep 2017 15:08:54 +0200
+ -- lunga <lunga@complex>  Tue, 03 Oct 2017 13:09:18 +0200
 
 python3-qoqa (0.1.1) unstable; urgency=low
 
