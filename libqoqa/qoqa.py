@@ -92,6 +92,7 @@ def new_build(version: str):
         print(Fore.RED + '[qoqa] incorrect version format')
         exit()
 
+    project_directory = os.path.basename(os.getcwd())
     config = configparser.ConfigParser()
     config['DJANGO_PROJECT_VERSION'] = {'Version': version}
     with open('qoqa.cfg', 'w') as cfg:
@@ -109,8 +110,7 @@ def new_build(version: str):
         print(Fore.GREEN + "[qoqa] MANIFEST.in has not been created.")
         build.manifest()
 
-    if os.path.isfile(os.path.join(os.path.basename(os.getcwd())),
-                      'start_gunicorn'):
+    if os.path.isfile(os.path.join(project_directory, 'start_gunicorn')):
         print(Fore.GREEN + '[qoqa] start_gunicorn file exists')
     else:
         print(Fore.GREEN + '[qoqa] Creating new start_gunicorn script')
