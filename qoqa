@@ -5,7 +5,7 @@ import argparse
 from libqoqa import qoqa
 from colorama import init, Fore
 
-init()
+init(autoreset=True)
 
 
 def main():

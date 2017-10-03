@@ -23,7 +23,6 @@ def update_changelog(version: str):
         print(Fore.RED + '[qoqa] unable to update version')
         print(Fore.RED + '[qoqa] {}'.format(error))
         exit()
-    print(Style.RESET_ALL)
 
 
 def create_changelog(version: str):
@@ -41,7 +40,6 @@ def create_changelog(version: str):
             print(Fore.RED + "[qoqa] Unable to create changelog file")
             print(Fore.RED + "[qoqa] {}".format(error))
             exit()
-    print(Style.RESET_ALL)
 
 
 def debian(version: str):
@@ -72,7 +70,6 @@ def debian(version: str):
         exit()
     else:
         template_files()
-    print(Style.RESET_ALL)
 
 
 def template_files():
@@ -87,7 +84,6 @@ def template_files():
             f.truncate()
             f.write(text)
     print(Fore.GREEN + "[qoqa] debian directory setup")
-    print(Style.RESET_ALL)
 
 
 def python_setup_file():
@@ -100,7 +96,6 @@ def python_setup_file():
         with open(os.path.join(os.getcwd(), 'setup.py'), 'w') as setup_file:
             setup_file.write(text)
     print(Fore.GREEN + '[qoqa] setup.py file created')
-    print(Style.RESET_ALL)
 
 
 def gunicorn_file():
@@ -121,7 +116,6 @@ def gunicorn_file():
     except NotADirectoryError as error:
         print(Fore.RED + '[qoqa] {}'.format(error))
         exit()
-    print(Style.RESET_ALL)
 
 
 def requirements():
@@ -133,7 +127,6 @@ def requirements():
           "and typing the command "
           "pip freeze > requirements.txt")
     exit()
-    print(Style.RESET_ALL)
 
 
 def manifest():
@@ -147,7 +140,6 @@ def manifest():
         with open(os.path.join(os.getcwd(), 'MANIFEST.in'), 'w') as manifest:
             manifest.write(text)
     print(Fore.GREEN + '[qoqa] MANIFEST.in file created')
-    print(Style.RESET_ALL)
 
 
 def dpkg(version):
@@ -175,7 +167,6 @@ def dpkg(version):
         print(Fore.RED + '[qoqa] {}'.format(error))
         exit()
     print(Fore.GREEN + "[qoqa] django project built")
-    print(Style.RESET_ALL)
 
 
 def django_app_data():
@@ -212,4 +203,3 @@ def django_app_data():
             setup_file.write(new_setup_file.getvalue())
             new_setup_file.close()
     print(Fore.GREEN + '[qoqa] collected and setup files')
-    print(Style.RESET_ALL)

@@ -106,10 +106,11 @@ def new_build(version: str):
     if os.path.isfile('MANIFEST.in'):
         print(Fore.GREEN + '[qoqa] MANIFEST.in file exists')
     else:
-        print(Fore.GREEN + "[qoqa] MANIFEST.in has not been created, creating.")
+        print(Fore.GREEN + "[qoqa] MANIFEST.in has not been created.")
         build.manifest()
 
-    if os.path.isfile('start_gunicorn'):
+    if os.path.isfile(os.path.join(os.path.basename(os.getcwd())),
+                      'start_gunicorn'):
         print(Fore.GREEN + '[qoqa] start_gunicorn file exists')
     else:
         print(Fore.GREEN + '[qoqa] Creating new start_gunicorn script')
@@ -125,7 +126,7 @@ def new_build(version: str):
         print(Fore.GREEN + "[qoqa] debian directory exists, updating version")
         build.update_changelog(version)
     else:
-        print(Fore.GREEN + "[qoqa] debian directory does not exist, creating one....")
+        print(Fore.GREEN + "[qoqa] debian directory does not exist")
         build.debian(version)
     print(Fore.GREEN + "[qoqa] Project ready to be built")
 
@@ -143,8 +144,7 @@ def release(version):
     config = configparser.ConfigParser()
     config.read('qoqa.cfg')
     if version != config['DJANGO_PROJECT_VERSION']['Version']:
-        print(Fore.RED + "[qoqa] Build version and project version to not match")
+        print(Fore.RED + "[qoqa] Build version and release version to not match")
         exit()
     print(Fore.GREEN + '[qoqa] Creating .deb for django project')
     build.dpkg(version)
-    print(Style.RESET_ALL)
