@@ -10,7 +10,7 @@ setup(
             'data/debian/*.example',
             'data/MANIFEST.in.example',
             'data/setup.py.example',
-            'data/start_gunicorn.example'
+            'data/start_gunicorn.example',
             'data/template.zip'
         ]
 
