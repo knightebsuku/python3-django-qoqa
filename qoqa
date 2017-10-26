@@ -15,7 +15,7 @@ def main():
     parser = argparse.ArgumentParser(description="Qoqa is an application to"
                                      " create a new django project and to"
                                      " build the django project")
-    parser.add_argument('action', nargs=2, help='use new, build or release')
+    parser.add_argument('action', nargs=2, help='use new, build, release, env')
     args = parser.parse_args()
     if args.action:
         if args.action[0] == 'new':
@@ -24,6 +24,8 @@ def main():
             qoqa.new_build(args.action[1])
         elif args.action[0] == 'release':
             qoqa.release(args.action[1])
+        elif args.action[0] == 'env':
+            qoqa.env()
         else:
             print(Fore.RED + '[qoqa] Unknown argument use either new, build or release')
             exit()

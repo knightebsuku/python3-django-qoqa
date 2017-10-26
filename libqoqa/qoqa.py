@@ -148,3 +148,11 @@ def release(version):
         exit()
     print(Fore.GREEN + '[qoqa] Creating .deb for django project')
     build.dpkg(version)
+
+
+def env():
+    """
+    Only create virtualenv within project
+    """
+    env = virtualenv.SingleVenv(with_pip=True)
+    env.create('env')
