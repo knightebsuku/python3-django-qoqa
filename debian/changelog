@@ -1,4 +1,4 @@
-python3-qoqa (0.5.0) UNRELEASED; urgency=medium
+python3-qoqa (0.5.1) UNRELEASED; urgency=medium
 
   * Enable SSL settings
   * start gunicorn in virtualenv
@@ -8,8 +8,9 @@ python3-qoqa (0.5.0) UNRELEASED; urgency=medium
   * Remove manual resetting of colorama
   * Ability to create only virtualenv
   * 
+  * Include template.zip in setup.py
 
- -- lunga <lunga@complex>  Thu, 26 Oct 2017 14:29:42 +0200
+ -- lunga <lunga@complex-desktop>  Thu, 26 Oct 2017 19:40:49 +0200
 
 python3-qoqa (0.1.1) unstable; urgency=low
 
