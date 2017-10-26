@@ -25,7 +25,7 @@ def main():
         elif args.action[0] == 'release':
             qoqa.release(args.action[1])
         elif args.action[0] == 'env':
-            qoqa.env()
+            qoqa.env(args.action[1])
         else:
             print(Fore.RED + '[qoqa] Unknown argument use either new, build or release')
             exit()
