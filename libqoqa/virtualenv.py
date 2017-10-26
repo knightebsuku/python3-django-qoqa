@@ -22,20 +22,16 @@ class SingleVenv(venv.EnvBuilder):
             print(Fore.GREEN + "[qoqa] Installing pip files: ")
             print(Fore.GREEN + "[qoqa] Preparing to install django")
             subprocess.run([pip, 'install', 'django'], check=True)
-            
             print(Fore.GREEN + "[qoqa] django package installed")
             print(Fore.GREEN + '[qoqa] Preparing to install whitenoise')
             subprocess.run([pip, 'install', 'whitenoise'], check=True)
-            
             print(Fore.GREEN + "[qoqa] whitenoise package installed")
             print(Fore.GREEN + "[qoqa] Preparing to install django-debug-toolbar")
             subprocess.run([pip, 'install', 'django-debug-toolbar'],
                            check=True)
-            
             print(Fore.GREEN + "[qoqa] django-debug-toolbar package installed")
             print(Fore.GREEN + "[qoqa] Preparing into install gunicorn")
             subprocess.run([pip, 'install', 'gunicorn'], check=True)
-            
             print(Fore.GREEN + "[qoqa] gunicorn package installed")
         except subprocess.CalledProcessError as err:
             print(Fore.RED + "[qoqa] Unable to download pip files, cleaning up")
@@ -43,8 +39,24 @@ class SingleVenv(venv.EnvBuilder):
             os.chdir("..")
             shutil.rmtree(self._project_name)
             exit()
+        else:
+            self._requirements(context)
 
-
+    def _requirements(self, context):
+        """
+        check for requirements file and pull dependencies if needed
+        """
+        pip = os.path.join(context.bin_path, 'pip')
+        if os.path.isfile('requirements.txt'):
+            try:
+                print(Fore.GREEN + "[qoqa] fetching dependencies")
+                subprocess.run([pip, 'install', '-r', 'requirements.txt'],
+                               check=True)
+            except subprocess.CalledProcessError as error:
+                print(Fore.RED + "[qoqa] Unable to download pip files")
+                exit()
+        else:
+            print(Fore.RED + "[qoqa] Unable to find requirements.txt file")
 
 
 class ExtendVenv(venv.EnvBuilder):
