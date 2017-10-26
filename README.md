@@ -1,4 +1,4 @@
-# Python3-qoqa 0.4.2
+# Python3-qoqa 0.5.0
 
 https://ebsuku.github.io/python3-qoqa/
 
@@ -9,9 +9,10 @@ qoqa is a command line application to help setup django projects and package the
 _This project is mainly targeting small to medium sized django projects.__
 
 
-# New Additions
+### New Additions
 * qoqa will now automatically try and find django static files and place them in the setup.py file
 * Color coding output
+* Only create virtualenv
 
 
 #### Project dependencies
@@ -19,8 +20,8 @@ _This project is mainly targeting small to medium sized django projects.__
 * dpkg
 * dpkg-dev 
 * dh-virtualenv (>= 1.0)
-* python3.5
-* python3-venv
+* python3.5 (>= 3.5)
+* python3-venv(>= 3.5)
 * python3-setuptools
 * dh-python
 
