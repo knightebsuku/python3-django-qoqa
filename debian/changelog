@@ -1,5 +1,4 @@
 python3-qoqa (0.6.0) UNRELEASED; urgency=medium
-
   * Enable SSL settings
   * start gunicorn in virtualenv
   * Autodiscovery of django static files
@@ -7,7 +6,10 @@ python3-qoqa (0.6.0) UNRELEASED; urgency=medium
   * Add start_gunicorn to data files
   * Remove manual resetting of colorama
   * Ability to create only virtualenv
- -- lunga <lunga@dragon>  Thu, 04 Jan 2018 13:32:06 +0200
+  * 
+  * Include template.zip in setup.py
+
+ -- lunga <lunga@complex-desktop>  Thu, 26 Oct 2017 19:40:49 +0200
 
 python3-qoqa (0.1.1) unstable; urgency=low
 

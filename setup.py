@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='python3-qoqa',
-    version='0.5.0',
+    version='0.5.1',
     packages=find_packages(),
     scripts=['qoqa'],
     package_data={
@@ -10,7 +10,7 @@ setup(
             'data/debian/*.example',
             'data/MANIFEST.in.example',
             'data/setup.py.example',
-            'data/start_gunicorn.example'
+            'data/start_gunicorn.example',
             'data/template.zip'
         ]
 
