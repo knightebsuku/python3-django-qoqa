@@ -1,4 +1,4 @@
-# Python3-qoqa 0.5.0
+# Python3-qoqa 0.5.1
 
 https://ebsuku.github.io/python3-qoqa/
 
@@ -6,13 +6,30 @@ qoqa is a command line application to help setup django projects and package the
 
 * Qoqa is a Zulu word which roughly translates to collect.
 
-_This project is mainly targeting small to medium sized django projects.__
+I built this project as an experiment to check as to whether a django project could be deployed by packacking it as a debian(.deb) file.
 
 
-### New Additions
-* qoqa will now automatically try and find django static files and place them in the setup.py file
-* Color coding output
+## Overview
+
+* Creating a new Project
+``` 
+$ qoqa new <projectname>
+```
+
+* Building Project
+```
+$ qoqa build <version>
+```
+
+* Releasing Project
+```
+$ qoqa release <version>
+```
+
 * Only create virtualenv
+```
+$ qoqa env <env_name>
+```
 
 
 #### Project dependencies
@@ -24,17 +41,17 @@ _This project is mainly targeting small to medium sized django projects.__
 * python3-venv(>= 3.5)
 * python3-setuptools
 * dh-python
+* python3-colorama
 
 
-
-We'll go through the usage of qoqa by creating a full django project, packaging and deploying it
+We'll go through the usage of qoqa by creating a demo django project, packaging and deploying it
 
 ## Creating a new Project
 To create a new Django project the following command is used
 ```
 $qoqa new fruit
 ```
-The above command will launch an interactive session asking a few questions.
+The above command will launch an interactive session asking a couple of database questions.
 
 _At this current stage only sqlite3 and postgresql databases are supported_
 
@@ -85,8 +102,6 @@ hosts = 127.0.0.1,localhost
 ```
 The production.cfg file looks somewhat similar to the fruit.cfg file, just that production will be set to True and the secret key value will be different.
 
-When the django project gets placed in a production environment, the production.cfg will will be renamed to fruit.cfg since that is what the fruit/settings.py file will be looking for.
-
 The fruit/settings.py has been modified to accomodate the fruit.cfg file.
 
 The Modifed fruit/settings.py is created via the [django startproject template argument](https://docs.djangoproject.com/en/1.11/ref/django-admin/#django-admin-startproject)
@@ -105,7 +120,7 @@ So now we have the following directory structure
     * fruit.cfg
     * manage.py
     * production.cfg
-	* __init__.py
+    * __init__.py
 
 So now we can continue on developing our project the usual way.
 
@@ -117,12 +132,12 @@ First we'll need create a `requirements.txt` file
 ```
 $pip freeze > requirements.txt
 ```
-_This command needs to be run in the same directory as the projects env directory._
+_The requirements file needs to sit besides the fruit and env directories._
 
 ```
 $qoqa build 0.1.0
 ```
-_This command needs to be run in the same directory as the env directory_
+_This command needs to be run in the project directory_
 
 The above command will generate the required files needed to begin the release process.
 
@@ -192,6 +207,8 @@ package_data = {
 
 More details about the setup.py file and configurations can be found [here](http://setuptools.readthedocs.io/en/latest/setuptools.html)
 
+## Manifest.in
+In the mainfest file by default will allow you to include the production.cfg file with the .deb package once its get built.
 
 
 ## Releasing the django project
@@ -235,5 +252,5 @@ The application should now be running on 0.0.0.0:8000
 
 ##### Just two Notes
 
-* The application is served via [Gunicorn](http://gunicorn.org/) and not Django's development server
+* In production application is served via [Gunicorn](http://gunicorn.org/) and not Django's development server
 * [Whitenoise](http://whitenoise.evans.io/en/stable/) handles the static files
