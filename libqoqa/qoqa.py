@@ -64,21 +64,24 @@ def development_config(project_name: str):
     print(Fore.GREEN + '[qoqa] Configuration file has been created')
 
 
-def create(project_name: str):
+def create(project_name: str, **kwargs):
     """
     Launch interactive console and setup new project
     """
     if project_name in ['new', 'build', 'release']:
         print(Fore.RED + '[qoqa] invalid project name: {}'.format(project_name))
         exit()
-    print("[qoqa] Configuring New Django Project")
+    if not re.match('\d.+', kwargs['django']):
+        print(Fore.RED + '[qoqa] incorrect version format')
+        exit()
     if os.path.isdir(project_name):
         print(Fore.RED + "[qoqa] project directory already exists")
         exit()
+    print("[qoqa] Configuring New Django Project")
     db.setup()
     os.mkdir(project_name)
     os.chdir(project_name)
-    virtualenv.create(project_name)
+    virtualenv.create(project_name, kwargs['django'])
     development_config(project_name)
     production_config(project_name)
     print(Fore.GREEN + "[qoqa] Project {} has been setup".format(project_name))

@@ -12,6 +12,9 @@ template_zip = os.path.join(DATA_DIRECTORY, 'template.zip')
 
 
 class SingleVenv(venv.EnvBuilder):
+    """
+    Class to just create a virtualenv on an existing project
+    """
     def post_setup(self, context):
         """
         install default applications
@@ -63,6 +66,7 @@ class ExtendVenv(venv.EnvBuilder):
 
     def __init__(self, project_name, *args, **kwargs):
         self._project_name = project_name
+        self._dj_version = args[0]
         super().__init__(*args, **kwargs)
 
     def post_setup(self, context):
@@ -74,12 +78,15 @@ class ExtendVenv(venv.EnvBuilder):
         try:
             print(Fore.GREEN + "[qoqa] Installing pip files: ")
             print(Fore.GREEN + "[qoqa] Preparing to install django")
-            subprocess.run([pip, 'install', 'django'], check=True)
+            subprocess.run([pip,
+                            'install',
+                            'django=={}'.format(self._dj_version)],
+                           check=True)
             print(Fore.GREEN + "[qoqa] django package installed")
             print(Fore.GREEN + '[qoqa] Preparing to install whitenoise')
             subprocess.run([pip, 'install', 'whitenoise'], check=True)
             print(Fore.GREEN + "[qoqa] whitenoise package installed")
-            print(Fore.GREEN + "[qoqa] Preparing to install django-debug-toolbar")
+            print(Fore.GREEN + "[qoqa] installing django-debug-toolbar")
             subprocess.run([pip, 'install', 'django-debug-toolbar'],
                            check=True)
             print(Fore.GREEN + "[qoqa] django-debug-toolbar package installed")
@@ -98,22 +105,26 @@ class ExtendVenv(venv.EnvBuilder):
         """
         dj_admin_script = os.path.join(context.bin_path, 'django-admin')
         print(Fore.GREEN + "[qoqa] initializing django project")
-        subprocess.run([
-            dj_admin_script,
-            'startproject',
-            '--template='+template_zip,
-            self._project_name])
+        try:
+            subprocess.run([
+                dj_admin_script,
+                'startproject',
+                '--template='+template_zip,
+                self._project_name], check=True)
 
-        print(Fore.GREEN + "[qoqa] django project directory created")
-        os.chdir(self._project_name)
-        with open('__init__.py', 'a'):
-            pass
-        os.chmod('manage.py', stat.S_IRWXU)
+            print(Fore.GREEN + "[qoqa] django project directory created")
+            os.chdir(self._project_name)
+        except subprocess.CalledProcessError as error:
+            print(Fore.RED + "Unable to use zip template")
+            print(error)
+            exit()
+        else:
+            os.chmod('manage.py', stat.S_IRWXU)
 
 
-def create(project_name: str):
+def create(project_name: str, dj_version: str):
     """
     create new virtual environment
     """
-    env = ExtendVenv(project_name, with_pip=True)
+    env = ExtendVenv(project_name, dj_version, with_pip=True)
     env.create('env')
