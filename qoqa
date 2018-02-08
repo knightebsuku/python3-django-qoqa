@@ -29,11 +29,13 @@ def main():
         elif args.action[0] == 'release':
             qoqa.release(args.action[1])
         elif args.action[0] == 'env':
-            qoqa.env(args.action[1])
             if args.django:
-                qoqa.env(args.action[1], django=args.django)
+                qoqa.env(args.action[1], args.django)
+            else:
+                print(Fore.RED + '[qoqa] specify a django version')
         else:
-            print(Fore.RED + '[qoqa] Unknown argument use either new, build or release')
+            print(Fore.RED + '[qoqa] Unknown argument use either new,'
+                  'build or release, env')
             exit()
 
 

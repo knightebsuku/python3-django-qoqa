@@ -15,8 +15,9 @@ class SingleVenv(venv.EnvBuilder):
     """
     Class to just create a virtualenv on an existing project
     """
-    def __init__(self, dj_version):
+    def __init__(self, dj_version, *args, **kwargs):
         self.dj_version = dj_version
+        super().__init__(*args, **kwargs)
 
     def post_setup(self, context):
         """
@@ -66,7 +67,8 @@ class SingleVenv(venv.EnvBuilder):
                 print(Fore.RED + "[qoqa] Unable to download pip files")
                 exit()
         else:
-            print(Fore.RED + "[qoqa] Unable to find requirements.txt file")
+            print(Fore.BLUE + "[qoqa] Unable to find requirements.txt "
+                  "Continuing.....")
 
 
 class ExtendVenv(venv.EnvBuilder):
