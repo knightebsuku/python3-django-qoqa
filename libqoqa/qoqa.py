@@ -157,5 +157,5 @@ def env(env_name, dj_version):
     """
     Only create virtualenv within project
     """
-    env = virtualenv.SingleVenv(with_pip=True, dj_version)
+    env = virtualenv.SingleVenv(dj_version, with_pip=True)
     env.create(env_name)

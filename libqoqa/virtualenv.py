@@ -11,7 +11,7 @@ from colorama import Fore
 template_zip = os.path.join(DATA_DIRECTORY, 'template.zip')
 
 
-class SingleVenv(venv.EnvBuilder, ):
+class SingleVenv(venv.EnvBuilder):
     """
     Class to just create a virtualenv on an existing project
     """
