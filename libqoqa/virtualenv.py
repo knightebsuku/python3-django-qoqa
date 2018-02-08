@@ -11,10 +11,13 @@ from colorama import Fore
 template_zip = os.path.join(DATA_DIRECTORY, 'template.zip')
 
 
-class SingleVenv(venv.EnvBuilder):
+class SingleVenv(venv.EnvBuilder, ):
     """
     Class to just create a virtualenv on an existing project
     """
+    def __init__(self, dj_version):
+        self.dj_version = dj_version
+
     def post_setup(self, context):
         """
         install default applications
@@ -24,12 +27,15 @@ class SingleVenv(venv.EnvBuilder):
         try:
             print(Fore.GREEN + "[qoqa] Installing pip files: ")
             print(Fore.GREEN + "[qoqa] Preparing to install django")
-            subprocess.run([pip, 'install', 'django'], check=True)
+            subprocess.run([pip, 'install',
+                            'django=={}'.format(self.dj_version)],
+                           check=True)
             print(Fore.GREEN + "[qoqa] django package installed")
             print(Fore.GREEN + '[qoqa] Preparing to install whitenoise')
             subprocess.run([pip, 'install', 'whitenoise'], check=True)
             print(Fore.GREEN + "[qoqa] whitenoise package installed")
-            print(Fore.GREEN + "[qoqa] Preparing to install django-debug-toolbar")
+            print(Fore.GREEN + "[qoqa] Preparing to "
+                  "install django-debug-toolbar")
             subprocess.run([pip, 'install', 'django-debug-toolbar'],
                            check=True)
             print(Fore.GREEN + "[qoqa] django-debug-toolbar package installed")
@@ -37,7 +43,8 @@ class SingleVenv(venv.EnvBuilder):
             subprocess.run([pip, 'install', 'gunicorn'], check=True)
             print(Fore.GREEN + "[qoqa] gunicorn package installed")
         except subprocess.CalledProcessError as err:
-            print(Fore.RED + "[qoqa] Unable to download pip files, cleaning up")
+            print(Fore.RED + "[qoqa] Unable to download pip files,"
+                  "cleaning up")
             print(Fore.RED + "[qoqa] removing incomplete directory")
             os.chdir("..")
             shutil.rmtree(self._project_name)

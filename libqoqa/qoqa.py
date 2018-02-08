@@ -153,9 +153,9 @@ def release(version):
     build.dpkg(version)
 
 
-def env(env_name):
+def env(env_name, dj_version):
     """
     Only create virtualenv within project
     """
-    env = virtualenv.SingleVenv(with_pip=True)
+    env = virtualenv.SingleVenv(with_pip=True, dj_version)
     env.create(env_name)
