@@ -1,22 +1,22 @@
-# Python3-qoqa 0.5.1
+# Python3-qoqa 0.8.0
 
 https://ebsuku.github.io/python3-qoqa/
 
 qoqa is a command line application to help setup django projects and package them as debian(.deb) packages._
 
-* Qoqa is a Zulu word which roughly translates to collect.
+* Qoqa is a Zulu word which roughly translates to package.
 
-I built this project as an experiment to check as to whether a django project could be deployed by packacking it as a debian(.deb) file.
+I built this project as an experiment to check as to whether a django project could be deployed by packaging it as a debian(.deb) file.
 
 
 ## Overview
 
 * Creating a new Project
 ``` 
-$ qoqa new <projectname>
+$ qoqa new <projectname> --django <version>
 ```
 
-* Building Project
+* Build Project
 ```
 $ qoqa build <version>
 ```
@@ -26,9 +26,9 @@ $ qoqa build <version>
 $ qoqa release <version>
 ```
 
-* Only create virtualenv
+* Only create virtualenv for an existing project
 ```
-$ qoqa env <env_name>
+$ qoqa env <env_name> --django <version>
 ```
 
 
@@ -49,7 +49,7 @@ We'll go through the usage of qoqa by creating a demo django project, packaging 
 ## Creating a new Project
 To create a new Django project the following command is used
 ```
-$qoqa new fruit
+$qoqa new fruit --django 1.11.10
 ```
 The above command will launch an interactive session asking a couple of database questions.
 
@@ -98,7 +98,7 @@ name = development_db.sqlite3
 database = sqlite3
 
 [ALLOWED_HOSTS]
-hosts = 127.0.0.1,localhost
+hosts = localhost
 ```
 The production.cfg file looks somewhat similar to the fruit.cfg file, just that production will be set to True and the secret key value will be different.
 
@@ -181,9 +181,9 @@ setup(
 )
 ```
 
-The ```find_packages()``` function searches for all python packages thats why the __init__.py is there under the fruit directory.
+The ```find_packages()``` function searches for all python packages thats why the ```__init__.py``` is there under the fruit directory.
 
-We are treating the entire django project as a python package, allowing for the apple and banana packages to fall under the fruit package.
+We are treating the entire django project as a python package, allowing for the apple and banana apps to fall under the fruit package.
 
 
 The ```package_data``` keyword argument is used to install other data files related to the package, so we'll be placing *.djhtml, *.css, and *.js files from our django applications.
