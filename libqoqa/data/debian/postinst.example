@@ -5,10 +5,10 @@ cd /opt/venvs/$projectname
 # Move application to top level project directory
 if [ -d "$projectname" ]
 then
-    cp -r lib/python3.5/site-packages/$projectname/** $projectname/
-    rm -rf lib/python3.5/site-packages/$projectname
+    cp -r lib/python3.6/site-packages/$projectname/** $projectname/
+    rm -rf lib/python3.6/site-packages/$projectname
 else
-    mv lib/python3.5/site-packages/$projectname .
+    mv lib/python3.6/site-packages/$projectname .
 fi
 chmod +x $projectname/manage.py
 
