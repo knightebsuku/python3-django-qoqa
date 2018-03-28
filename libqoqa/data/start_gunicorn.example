@@ -6,5 +6,9 @@ source /opt/venvs/$projectname/bin/activate
 
 cd /opt/venvs/$projectname/$projectname
 
-
-exec gunicorn --user webapp --bind 0.0.0.0:443 --workers 3 --log-level=info --log-file=/opt/venvs/$projectname/logs/gunicorn.log --certfile=/etc/letsencrypt/live/$projectname/cert.pem --keyfile=/etc/letsencrypt/live/$projectname/privkey.pem --ca-certs=/etc/letsencrypt/live/$projectname/chain.pem $projectname.wsgi
+if [ -f production.cfg]
+then
+    exec gunicorn --user webapp --bind 0.0.0.0:8000 --workers 3 --log-level=info --log-file=/opt/venvs/$projectname/logs/gunicorn.log $projectname.wsgi
+else
+    echo "Production configuration file does not exist"
+fi
