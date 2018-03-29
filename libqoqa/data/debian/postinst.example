@@ -47,12 +47,13 @@ adduser --disabled-password --gecos "" webapp
 chown -R webapp:webapp /opt/venvs/$projectname
 
 
-#Check if systemd service exists for $projectname.
-if systemctl status $projectname | grep Active | grep active
+#Check if systemd service for $projectname is running
+if systemctl is-active -q $projectname
 then
-    echo "$projectname is running......stopping"
+    echo "$projectname is running...stopping"
     systemctl stop $projectname
 fi
+
 
 
 RUN_CERTBOT=false
