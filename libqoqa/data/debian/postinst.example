@@ -12,14 +12,6 @@ else
 fi
 chmod +x $projectname/manage.py
 
-#Rename .cfg so that django/settings.py can read it
-if [ ! -f $projectname/$projectname.cfg ]
-then
-    mv $projectname/production.cfg $projectname/$projectname.cfg
-else
-    rm $projectname/production.cfg
-    
-fi
 
 #move start_gunicorn to env/bin directory and make execuatble
 mv $projectname/start_gunicorn bin/
