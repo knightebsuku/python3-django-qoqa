@@ -16,14 +16,10 @@ def main():
                                      " create a new django project and to"
                                      " build the django project")
     parser.add_argument('action', nargs=2, help='new, build, release, env')
-    parser.add_argument('--django', help='specify django version')
     args = parser.parse_args()
     if args.action:
         if args.action[0] == 'new':
-            if args.django:
-                qoqa.create(args.action[1], django=args.django)
-            else:
-                print(Fore.RED + '[qoqa] specify a django version')
+            qoqa.create(args.action[1])
         elif args.action[0] == 'build':
             qoqa.new_build(args.action[1])
         elif args.action[0] == 'release':

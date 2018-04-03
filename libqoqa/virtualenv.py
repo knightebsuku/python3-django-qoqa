@@ -136,4 +136,4 @@ def create(project_name: str, dj_version: str):
     create new virtual environment
     """
     env = ExtendVenv(project_name, dj_version, with_pip=True)
-    env.create('env')
+    env.create('env3')
