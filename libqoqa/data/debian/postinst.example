@@ -10,6 +10,8 @@ then
 else
     mv lib/python3.6/site-packages/$projectname .
 fi
+
+# manage.py must be executable
 chmod +x $projectname/manage.py
 
 
@@ -30,18 +32,6 @@ then
 fi
 
 
-# Activate Virtualenv
-source /opt/venvs/$projectname/bin/activate
-
-# Run django collectstatic
-cd /opt/venvs/$projectname/$projectname
-./manage.py collectstatic --noinput
-./manage.py migrate --noinput
-
-# Leave Virtualenv
-deactivate
-
-
 # Create user webapp and change project permissions to webapp user
 adduser --disabled-password --gecos "" webapp
 chown -R webapp:webapp /opt/venvs/$projectname
@@ -56,28 +46,29 @@ fi
 
 
 
-RUN_CERTBOT=false
-DOMAIN=$projectname
-if [ $RUN_CERTBOT = true ];
-then
-    echo "[qoqq] Checking if certbot is installed"
-    if type certbot &>/dev/null
-    then
-	echo "[qoqa] Certbot starting......."
-	echo "[qoqa] checking if domain certificate already exists"
-	if certbot certificates | grep $DOMAIN | grep -v grep &>/dev/null
-	then
-	    echo "[qoqa] Domin certificate exists, nothin to do"
-	else
-	    echo "[qoqa] Certificate for domain does not exists"
-	    echo "[qoqa] Creating new certificate for $DOMAIN"
-	    certbot certonly --standalone -d $projectname
-	fi
-    else
-	echo "[qoqa] Certbot not installed yet....please install"
-    fi
+# I dont think qoqa should be responsible for ssl
+# RUN_CERTBOT=false
+# DOMAIN=$projectname
+# if [ $RUN_CERTBOT = true ];
+# then
+#     echo "[qoqq] Checking if certbot is installed"
+#     if type certbot &>/dev/null
+#     then
+# 	echo "[qoqa] Certbot starting......."
+# 	echo "[qoqa] checking if domain certificate already exists"
+# 	if certbot certificates | grep $DOMAIN | grep -v grep &>/dev/null
+# 	then
+# 	    echo "[qoqa] Domin certificate exists, nothin to do"
+# 	else
+# 	    echo "[qoqa] Certificate for domain does not exists"
+# 	    echo "[qoqa] Creating new certificate for $DOMAIN"
+# 	    certbot certonly --standalone -d $projectname
+# 	fi
+#     else
+# 	echo "[qoqa] Certbot not installed yet....please install"
+#     fi
     
-fi
+# fi
 
 
 #Restart systemd service for $projectname
