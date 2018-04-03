@@ -8,7 +8,11 @@ cd /opt/venvs/$projectname/$projectname
 
 if [ -f $projectname.cfg]
 then
+    ./manage.py collectstatic --noinput
+    ./manage.py migrate --noinput
+    
     exec gunicorn --user webapp --bind 0.0.0.0:8000 --workers 3 --log-level=info --log-file=/opt/venvs/$projectname/logs/gunicorn.log $projectname.wsgi
 else
     echo "Production configuration file does not exist"
+    echo "Not starting services."
 fi
