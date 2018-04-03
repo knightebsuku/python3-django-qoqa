@@ -13,6 +13,26 @@ from . import build
 INIT_PROJECT_CONFIG = {}
 
 
+def django_version():
+    """
+    Specify a django version
+    """
+    dict_version = {
+        "1": "1.11.*",
+        "2": "2.0.*"
+    }
+    print(Fore.GREEN + "[qoqa] select django version number, default 1 ")
+    print(Fore.GREEN + "1) 1.11 LTS")
+    print(Fore.GREEN + "2) 2.0")
+    version = input(Fore.GREEN + ": ")
+    if version is None:
+        return dict_version['1']
+    elif version not in ['1', '2']:
+        print(Fore.RED + 'Invalid selection, options are 1 or 2')
+        django_version()
+    return dict_version[version]
+
+
 def generate_key():
     """
     Generate Secret key for django
@@ -64,24 +84,22 @@ def development_config(project_name: str):
     print(Fore.GREEN + '[qoqa] Configuration file has been created')
 
 
-def create(project_name: str, **kwargs):
+def create(project_name: str):
     """
     Launch interactive console and setup new project
     """
     if project_name in ['new', 'build', 'release']:
         print(Fore.RED + '[qoqa] invalid project name: {}'.format(project_name))
         exit()
-    if not re.match('\d.+', kwargs['django']):
-        print(Fore.RED + '[qoqa] incorrect version format')
-        exit()
     if os.path.isdir(project_name):
         print(Fore.RED + "[qoqa] project directory already exists")
         exit()
-    print("[qoqa] Configuring New Django Project")
+    print(Fore.BLUE + "[qoqa] Configuring New Django Project")
+    version = django_version()
     db.setup()
     os.mkdir(project_name)
     os.chdir(project_name)
-    virtualenv.create(project_name, kwargs['django'])
+    virtualenv.create(project_name, version)
     development_config(project_name)
     production_config(project_name)
     print(Fore.GREEN + "[qoqa] Project {} has been setup".format(project_name))
