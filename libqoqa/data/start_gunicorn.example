@@ -6,7 +6,7 @@ source /opt/venvs/$projectname/bin/activate
 
 cd /opt/venvs/$projectname/$projectname
 
-if [ -f $projectname.cfg]
+if [ -f $projectname.cfg ]
 then
     ./manage.py collectstatic --noinput
     ./manage.py migrate --noinput
