@@ -118,6 +118,16 @@ def gunicorn_file():
         exit()
 
 
+def init_file():
+    """
+    Create init.py to treat project as python package
+    """
+    project_directory = os.path.join(os.getcwd(),
+                                     os.path.basename(os.getcwd()))
+    with open(os.path.join(project_directory, '__init__.py'), 'w'):
+        pass
+
+
 def requirements():
     """
     Check whether requirements file exists
@@ -125,7 +135,7 @@ def requirements():
     print(Fore.RED + "[qoqa] create one by activating the relevant"
           "virtual environment "
           "and typing the command "
-          "pip freeze > requirements.txt")
+          "pip freeze -l > requirements.txt")
     exit()
 
 
