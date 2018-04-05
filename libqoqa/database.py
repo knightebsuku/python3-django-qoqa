@@ -6,28 +6,32 @@ def setup():
     """
     Configure database details
     """
-    dev_db = input(Fore.GREEN + "Development Database[sqlite3]: ")
-    if dev_db == '' or dev_db == 'sqlite3':
+    print(Fore.GREEN + 'Avaliable Databases')
+    print(Fore.GREEN + '1 - sqlite3')
+    print(Fore.GREEN + '2 - postgresql')
+    dev_db = input(Fore.GREEN + "Development Database [1]: ")
+    if dev_db == '' or dev_db == '1':
         qoqa.INIT_PROJECT_CONFIG['DEV_DB'] = {
             'DATABASE': 'sqlite3',
             'NAME': 'development_db.sqlite3'
         }
-    elif dev_db == 'postgresql':
+    elif dev_db == '2':
         development_postgresql()
     else:
-        print(Fore.RED + "[qoqa] Unknown database or database is not supported")
+        print(Fore.RED + "[qoqa] Unknown database selection")
         setup()
-    prod_db = input(Fore.GREEN + "Production Database[sqlite3]: ")
-    if prod_db == '' or prod_db == 'sqlite3':
+    prod_db = input(Fore.GREEN + "Production Database[1]: ")
+    if prod_db == '' or prod_db == '1':
         qoqa.INIT_PROJECT_CONFIG['PROD_DB'] = {
             'DATABASE': 'sqlite3',
             'NAME': 'production_db.sqlite3'
         }
-    elif prod_db == 'postgresql':
+    elif prod_db == '2':
         production_postgresql()
     else:
         print(Fore.RED + "Unknown database or database is not supported")
         setup()
+    return prod_db
 
 
 def development_postgresql():
