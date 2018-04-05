@@ -96,10 +96,10 @@ def create(project_name: str):
         exit()
     print(Fore.BLUE + "[qoqa] Configuring New Django Project")
     version = django_version()
-    db.setup()
+    prod_db = db.setup()
     os.mkdir(project_name)
     os.chdir(project_name)
-    virtualenv.create(project_name, version)
+    virtualenv.create(project_name, version, prod_db)
     development_config(project_name)
     production_config(project_name)
     print(Fore.GREEN + "[qoqa] Project {} has been setup".format(project_name))
@@ -136,7 +136,7 @@ def new_build(version: str):
     else:
         print(Fore.GREEN + '[qoqa] Creating new start_gunicorn script')
         build.gunicorn_file()
-        
+
     if os.path.isfile(os.path.join(project_directory, '__init__.py')):
         print(Fore.GREEN + '[qoqa] project __init__.py file exists')
     else:
