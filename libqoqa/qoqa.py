@@ -136,6 +136,12 @@ def new_build(version: str):
     else:
         print(Fore.GREEN + '[qoqa] Creating new start_gunicorn script')
         build.gunicorn_file()
+        
+    if os.path.isfile(os.path.join(project_directory, '__init__.py')):
+        print(Fore.GREEN + '[qoqa] project __init__.py file exists')
+    else:
+        build.init_file()
+        print(Fore.GREEN + '[qoqa]  __init__.py file created')
 
     if os.path.isfile('requirements.txt'):
         print(Fore.GREEN + "[qoqa] requirements.txt file exists")
