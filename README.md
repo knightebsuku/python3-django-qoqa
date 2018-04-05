@@ -8,6 +8,19 @@ qoqa is a commandline application to create django projects and to package them 
 
 [Tutorial](https://ebsuku.github.io/tutorials/qoqa/qoqa/)
 
+There are two ways to start using qoqa
+* Download latest [release](https://github.com/ebsuku/python3-qoqa/releases) untar the file then build from source
+
+```
+dpkg-buildpackage -us -uc
+```
+* Use the already built deb file in the releases folder
+
+```
+sudo dpkg -i python3-qoqa_0.9.0_amd64.deb 
+```
+
+
 ## Creating a new Project
 To create a new Django project the following command is used
 
