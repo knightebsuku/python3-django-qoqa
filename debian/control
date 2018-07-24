@@ -2,12 +2,12 @@ Source: python3-qoqa
 Section: python
 Priority: extra
 Maintainer: Lunga Mthembu stumenz.complex@gmail.com
-Build-Depends: debhelper (>= 10), python3, python3-setuptools, dh-python
+Build-Depends: debhelper (>= 9), python3, python3-setuptools, dh-python
 Standards-Version: 3.9.5
 
 Package: python3-qoqa
 Architecture: any
-Pre-Depends: devscripts, dpkg (>= 1.16.1), dpkg-dev (>=1.16.1),dh-virtualenv (>= 1.0), python3, python3-venv (>=3.6), ${misc:Pre-Depends},
+Pre-Depends: devscripts, dpkg (>= 1.16.1), dpkg-dev (>=1.16.1),dh-virtualenv (>= 1.0), python3, python3-venv (>=3.5), ${misc:Pre-Depends},
 Depends: ${python3:Depends}, ${misc:Depends}
 Description: django project packaging
 	      qoqa is a command line application to help setup django projects and package them as debian(.deb) packages.
