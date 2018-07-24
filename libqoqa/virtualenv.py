@@ -105,7 +105,8 @@ class ExtendVenv(venv.EnvBuilder):
                 subprocess.run([pip, 'install', 'psycopg2'],
                                check=True)
         except subprocess.CalledProcessError as err:
-            print(Fore.RED + "[qoqa] Unable to download pip files, cleaning up")
+            print(Fore.RED + "[qoqa] Unable to download pip files "
+                  "cleaning up")
             exit()
         else:
             self._startproject(context)
