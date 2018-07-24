@@ -1,4 +1,4 @@
-# Qoqa 0.9.0
+# Qoqa 0.9.1
 
 qoqa is a commandline application to create django projects and to package them as Debian(.deb) package files.
 
@@ -17,7 +17,7 @@ dpkg-buildpackage -us -uc
 * Use the already built deb file in the releases folder
 
 ```
-sudo dpkg -i python3-qoqa_0.9.0_amd64.deb 
+sudo dpkg -i python3-qoqa_0.9.1_amd64.deb 
 ```
 
 
