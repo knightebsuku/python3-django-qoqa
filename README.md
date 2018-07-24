@@ -257,3 +257,6 @@ http://dh-virtualenv.readthedocs.io/en/latest/tutorial.html#step-1-install-dh-vi
 * python3-setuptools
 * dh-python
 * python3-colorama
+
+## Contributing
+All pull requests must be sent to the devel branch.
