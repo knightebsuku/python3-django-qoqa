@@ -243,6 +243,9 @@ If you included the production.cfg file in the MANIFEST.in file, the services wi
 
 The application should now be running on 0.0.0.0:8000
 
+## Installing dh-virtualenv >= 1.0
+
+http://dh-virtualenv.readthedocs.io/en/latest/tutorial.html#step-1-install-dh-virtualenv
 
 ## Project dependencies
 * devscripts, 

@@ -2,7 +2,7 @@
 
 DPKG_EXPORT_BUILDFLAGS = 1
 export PYBUILD_INTERPRETERS=python{version}
-export PYBUILD_VERSIONS=3.6
+export PYBUILD_VERSIONS=3
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
