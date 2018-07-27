@@ -11,6 +11,10 @@ else
     mv lib/python3.6/site-packages/$projectname .
 fi
 
+# Move python3.*/site-packages to python3/dist-packages for making packages global for every python version
+mv lib/python3.* lib/python3
+mv lib/python3/site-packages lib/python3/dist-packages
+
 # manage.py must be executable
 chmod +x $projectname/manage.py
 
