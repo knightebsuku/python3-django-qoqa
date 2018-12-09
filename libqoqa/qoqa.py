@@ -19,16 +19,18 @@ def django_version():
     """
     dict_version = {
         "1": "1.11.*",
-        "2": "2.0.*"
+        "2": "2.0.*",
+        "3": "2.1.*"
     }
     print(Fore.GREEN + 'Avaliable django versions')
     print(Fore.GREEN + "1 - 1.11 LTS")
     print(Fore.GREEN + "2 - 2.0")
+    print(Fore.GREEN + "3 - 2.1") 
     version = input(Fore.GREEN + "[qoqa] select django version number [1]: ")
     if version == '':
         return dict_version['1']
     elif version not in ['1', '2']:
-        print(Fore.RED + 'Invalid selection, options are 1 or 2')
+        print(Fore.RED + 'Invalid selection, options are 1,2 or 3')
         django_version()
     return dict_version[version]
 
