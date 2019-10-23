@@ -1,4 +1,4 @@
-# Qoqa 0.9.0
+# Qoqa 0.9.2
 
 qoqa is a commandline application to create django projects and to package them as Debian(.deb) package files.
 
@@ -17,7 +17,7 @@ dpkg-buildpackage -us -uc
 * Use the already built deb file in the releases folder
 
 ```
-sudo dpkg -i python3-qoqa_0.9.0_amd64.deb 
+sudo dpkg -i python3-qoqa_0.9.2_amd64.deb 
 ```
 
 
@@ -243,6 +243,9 @@ If you included the production.cfg file in the MANIFEST.in file, the services wi
 
 The application should now be running on 0.0.0.0:8000
 
+## Installing dh-virtualenv >= 1.0
+
+http://dh-virtualenv.readthedocs.io/en/latest/tutorial.html#step-1-install-dh-virtualenv
 
 ## Project dependencies
 * devscripts, 
@@ -254,3 +257,6 @@ The application should now be running on 0.0.0.0:8000
 * python3-setuptools
 * dh-python
 * python3-colorama
+
+## Contributing
+All pull requests must be sent to the devel branch.

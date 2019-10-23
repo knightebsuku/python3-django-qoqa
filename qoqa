@@ -12,25 +12,46 @@ def main():
     """
     Main Entry point for qoqa
     """
-    parser = argparse.ArgumentParser(description="Qoqa is an application to"
-                                     " create a new django project and to"
-                                     " build the django project")
-    parser.add_argument('action', nargs=2, help='new, build, release, env')
+    parser = argparse.ArgumentParser(
+        description="Qoqa is an application to"
+        " create a new django project and to"
+        " build the django project"
+    )
+    subparsers = parser.add_subparsers(dest="commands")
+    parser_new = subparsers.add_parser("new")
+    parser_new.add_argument("name")
+
+    parser_build = subparsers.add_parser("build")
+    parser_build.add_argument(
+        "--version", required=True, help="Version of this release"
+    )
+
+    parser_release = subparsers.add_parser("release")
+    parser_release.add_argument(
+        "--version", required=True, help="Version of this release"
+    )
+
+    parser_env = subparsers.add_parser("env")
+    parser_env.add_argument("name", required=True)
+    parser_env.add_argument("--version", help="Django version")
+
     args = parser.parse_args()
-    if args.action:
-        if args.action[0] == 'new':
-            qoqa.create(args.action[1])
-        elif args.action[0] == 'build':
-            qoqa.new_build(args.action[1])
-        elif args.action[0] == 'release':
-            qoqa.release(args.action[1])
-        elif args.action[0] == 'env':
-            qoqa.env(args.action[1])
-        else:
-            print(Fore.RED + '[qoqa] Unknown argument use either new,'
-                  'build or release, env')
-            exit()
+    print(args)
+    print(dir(args))
+    if args.commands == "new":
+        qoqa.create(args.name)
+    elif args.commands == "build":
+        qoqa.new_build(args.action[1])
+    elif args.commands == "release":
+        qoqa.release(args.version)
+    elif args.action[0] == "env":
+        qoqa.env(args.action[1])
+    else:
+        print(
+            Fore.RED + "[qoqa] Unknown argument use either new," "build or release, env"
+        )
+        exit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
