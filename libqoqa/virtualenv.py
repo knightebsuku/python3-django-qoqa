@@ -8,7 +8,7 @@ from .build import DATA_DIRECTORY
 from colorama import Fore
 
 
-template_zip = os.path.join(DATA_DIRECTORY, "template.zip")
+default_template_zip = os.path.join(DATA_DIRECTORY, "template.zip")
 
 
 class SingleVenv(venv.EnvBuilder):
@@ -76,6 +76,7 @@ class ExtendVenv(venv.EnvBuilder):
         self._project_name = project_name
         self._django_version = django_version
         self.prod_status = production_status
+        self.template_path = template_path
         super().__init__(*args, **kwargs)
 
     def post_setup(self, context):
@@ -112,6 +113,8 @@ class ExtendVenv(venv.EnvBuilder):
         """
         Create a new django project
         """
+        if not self.template_path:
+            self.template_path = default_template_zip
         dj_admin_script = os.path.join(context.bin_path, "django-admin")
         print(Fore.GREEN + "[qoqa] initializing django project")
         try:
@@ -129,9 +132,9 @@ class ExtendVenv(venv.EnvBuilder):
             os.chmod("manage.py", stat.S_IRWXU)
 
 
-def create(project_name: str, dj_version: str, prod_db: str):
+def create(project_name: str, dj_version: str, prod_db: str, template_path):
     """
     create new virtual environment
     """
-    env = ExtendVenv(project_name, dj_version, prod_db, with_pip=True)
+    env = ExtendVenv(project_name, dj_version, prod_db, template_path, with_pip=True)
     env.create("env3")
