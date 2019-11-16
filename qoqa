@@ -26,11 +26,13 @@ def main():
     parser_build.add_argument(
         "--version", required=True, help="Version of this release"
     )
+    parser_build.add_argument("--version", help="Version of this release")
 
     parser_release = subparsers.add_parser("release")
     parser_release.add_argument(
         "--version", required=True, help="Version of this release"
     )
+    parser_release.add_argument("--version", help="Version of this release")
 
     parser_env = subparsers.add_parser("env")
     parser_env.add_argument("name", required=True)
