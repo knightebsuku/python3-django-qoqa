@@ -84,7 +84,7 @@ def configuration_file(status, db_config):
     print(Fore.GREEN + f"[qoqa] {status} configuration file created")
 
 
-def create(project_name):
+def create(project_name, template):
     """
     Launch interactive console and setup new project
     """
@@ -105,7 +105,7 @@ def create(project_name):
         db_config = database.create("production")
         configuration_file("production", db_config)
 
-    # virtualenv.create(project_name, version, prod_status)
+    virtualenv.create(project_name, version, prod_status, template)
 
     print(Fore.GREEN + f"[qoqa] Project {project_name} has been setup")
 
