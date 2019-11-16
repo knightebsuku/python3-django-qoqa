@@ -23,26 +23,17 @@ def main():
     parser_new.add_argument("--template", help="path to template zip file")
 
     parser_build = subparsers.add_parser("build")
-    parser_build.add_argument(
-        "--version", required=True, help="Version of this release"
-    )
     parser_build.add_argument("--version", help="Version of this release")
 
     parser_release = subparsers.add_parser("release")
-    parser_release.add_argument(
-        "--version", required=True, help="Version of this release"
-    )
     parser_release.add_argument("--version", help="Version of this release")
 
     parser_env = subparsers.add_parser("env")
-    parser_env.add_argument("name", required=True)
+    parser_env.add_argument("name")
     parser_env.add_argument("--version", help="Django version")
 
     args = parser.parse_args()
-    print(args)
-    print(dir(args))
     if args.commands == "new":
-        qoqa.create(args.name)
         qoqa.create(args.name, args.template)
     elif args.commands == "build":
         qoqa.new_build(args.action[1])
