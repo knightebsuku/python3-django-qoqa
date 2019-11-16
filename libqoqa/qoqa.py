@@ -27,7 +27,8 @@ def django_version():
             return dict_version["1"]
         elif version not in ["1", "2"]:
             print(Fore.RED + "Invalid selection, options are 1 or 2")
-        return dict_version[version]
+        else:
+            return dict_version[version]
 
 
 def generate_key():
