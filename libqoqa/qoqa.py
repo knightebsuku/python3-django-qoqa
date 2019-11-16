@@ -53,8 +53,11 @@ def create_production_settings():
     options = {"yes": True, "no": False}
     while True:
         status = input(
-            Fore.GREEN + "Do you wan to create production configuration files? [yes]: "
+            Fore.GREEN
+            + "Do you want to create a production configuration file? [yes]: "
         )
+        if status == "":
+            return options["yes"]
         if status not in ["yes", "no"]:
             print(Fore.RED + "Invalid option, please type yes or no")
         else:
