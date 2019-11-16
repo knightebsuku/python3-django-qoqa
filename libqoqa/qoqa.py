@@ -39,7 +39,7 @@ def generate_key():
             random.SystemRandom().choice(
                 string.ascii_letters + string.digits + string.punctuation
             )
-            for _ in range(50)
+            for _ in range(100)
         ]
     )
     return key
