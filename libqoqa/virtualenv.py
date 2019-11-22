@@ -8,7 +8,7 @@ from .build import DATA_DIRECTORY
 from colorama import Fore
 
 
-template_zip = os.path.join(DATA_DIRECTORY, "template.zip")
+default_template_zip = os.path.join(DATA_DIRECTORY, "template.zip")
 
 
 class SingleVenv(venv.EnvBuilder):
@@ -71,11 +71,18 @@ class SingleVenv(venv.EnvBuilder):
 
 class ExtendVenv(venv.EnvBuilder):
     def __init__(
-        self, project_name, django_version, production_status, *args, **kwargs
+        self,
+        project_name,
+        django_version,
+        production_status,
+        template_path,
+        *args,
+        **kwargs,
     ):
         self._project_name = project_name
         self._django_version = django_version
         self.prod_status = production_status
+        self.template_path = template_path
         super().__init__(*args, **kwargs)
 
     def post_setup(self, context):
@@ -83,17 +90,16 @@ class ExtendVenv(venv.EnvBuilder):
         install default applications
         """
         os.environ["VIRTUAL_ENV"] = context.env_dir
-        print("The path is {context.bin_path}")
         pip = os.path.join(context.bin_path, "pip")
         try:
             print(Fore.GREEN + "[qoqa] Installing pip files: ")
             print(Fore.GREEN + "[qoqa] Preparing to install django")
             subprocess.run(
-                [pip, "install", "django=={self._django_version"], check=True
+                [pip, "install", f"django=={self._django_version}"], check=True
             )
             print(Fore.GREEN + "[qoqa] Preparing to install whitenoise")
             subprocess.run([pip, "install", "whitenoise"], check=True)
-            print(Fore.GREEN + "[qoqa] installing django-debug-toolbar")
+            print(Fore.GREEN + "[qoqa] installing django-debug-toolbar")-
             subprocess.run([pip, "install", "django-debug-toolbar"], check=True)
             print(Fore.GREEN + "[qoqa] Preparing into install gunicorn")
             subprocess.run([pip, "install", "gunicorn"], check=True)
@@ -110,28 +116,36 @@ class ExtendVenv(venv.EnvBuilder):
 
     def _startproject(self, context):
         """
-        Create a new django project
+        Create a new django projecte
         """
+        if not self.template_path:
+            self.template_path = default_template_zip
         dj_admin_script = os.path.join(context.bin_path, "django-admin")
-        print(Fore.GREEN + "[qoqa] initializing django project")
+        print(Fore.GREEN + "[qoqa] initializing django project....................")
         try:
             subprocess.run(
-                [dj_admin_script, "startproject", "--template=" + template_zip, "."],
+                [
+                    dj_admin_script,
+                    "startproject",
+                    "--template=" + self.template_path,
+                    self._project_name,
+                    ".",
+                ],
                 check=True,
             )
 
             print(Fore.GREEN + "[qoqa] django project created")
-            os.chdir(self._project_name)
         except subprocess.CalledProcessError as error:
             print(Fore.RED + f"Unable to use zip template: {error}")
             exit()
         else:
+            print(Fore.GREEN + "[qoqa] making manage.py executable")
             os.chmod("manage.py", stat.S_IRWXU)
 
 
-def create(project_name: str, dj_version: str, prod_db: str):
+def create(project_name: str, dj_version: str, prod_db: str, template_path):
     """
     create new virtual environment
     """
-    env = ExtendVenv(project_name, dj_version, prod_db, with_pip=True)
+    env = ExtendVenv(project_name, dj_version, prod_db, template_path, with_pip=True)
     env.create("env3")

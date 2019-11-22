@@ -27,7 +27,8 @@ def django_version():
             return dict_version["1"]
         elif version not in ["1", "2"]:
             print(Fore.RED + "Invalid selection, options are 1 or 2")
-        return dict_version[version]
+        else:
+            return dict_version[version]
 
 
 
@@ -40,7 +41,7 @@ def generate_key():
             random.SystemRandom().choice(
                 string.ascii_letters + string.digits + string.punctuation
             )
-            for _ in range(50)
+            for _ in range(100)
         ]
     )
     return key
@@ -53,8 +54,11 @@ def create_production_settings():
     options = {"yes": True, "no": False}
     while True:
         status = input(
-            Fore.GREEN + "Do you wan to create production configuration files? [yes]: "
+            Fore.GREEN
+            + "Do you want to create a production configuration file? [yes]: "
         )
+        if status == "":
+            return options["yes"]
         if status not in ["yes", "no"]:
             print(Fore.RED + "Invalid option, please type yes or no")
         else:
@@ -85,7 +89,7 @@ def configuration_file(status, db_config):
     print(Fore.GREEN + f"[qoqa] {status} configuration file created")
 
 
-def create(project_name):
+def create(project_name, template):
     """
     Launch interactive console and setup new project
     """
@@ -106,7 +110,7 @@ def create(project_name):
         db_config = database.create("production")
         configuration_file("production", db_config)
 
-    # virtualenv.create(project_name, version, prod_status)
+    virtualenv.create(project_name, version, prod_status, template)
 
     print(Fore.GREEN + f"[qoqa] Project {project_name} has been setup")
 
