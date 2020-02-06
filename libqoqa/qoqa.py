@@ -12,7 +12,7 @@ from . import build
 
 INIT_PROJECT_CONFIG = {}
 
-
+ # add libpq-dev
 def django_version():
     """
     Specify a django version
@@ -65,7 +65,7 @@ def create_production_settings():
             return options[status]
 
 
-def configuration_file(status, db_config):
+def configuration_file(status, db_config, project_name=None):
     """
     Create a configuration file based on the status(production, development)
     """
@@ -78,13 +78,15 @@ def configuration_file(status, db_config):
 
     if status == "development":
         config["STATUS"] = {"Production": False}
+        file_name = project_name
 
     elif status == "production":
         config["STATUS"] = {"Production": True}
+        file_name = 'production'
     else:
         print(Fore.RED + "Unknown development status")
         exit()
-    with open(f"{status}.cfg", "w") as status_file:
+    with open(f"{file_name}.cfg", "w") as status_file:
         config.write(status_file)
     print(Fore.GREEN + f"[qoqa] {status} configuration file created")
 
@@ -105,7 +107,7 @@ def create(project_name, template):
     os.mkdir(project_name)
     os.chdir(project_name)
     db_config = database.create("development")
-    configuration_file("development", db_config)
+    configuration_file("development", db_config, project_name)
     if prod_status:
         db_config = database.create("production")
         configuration_file("production", db_config)

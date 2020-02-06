@@ -77,7 +77,7 @@ class ExtendVenv(venv.EnvBuilder):
         production_status,
         template_path,
         *args,
-        **kwargs,
+        **kwargs
     ):
         self._project_name = project_name
         self._django_version = django_version
@@ -99,7 +99,7 @@ class ExtendVenv(venv.EnvBuilder):
             )
             print(Fore.GREEN + "[qoqa] Preparing to install whitenoise")
             subprocess.run([pip, "install", "whitenoise"], check=True)
-            print(Fore.GREEN + "[qoqa] installing django-debug-toolbar")-
+            print(Fore.GREEN + "[qoqa] installing django-debug-toolbar")
             subprocess.run([pip, "install", "django-debug-toolbar"], check=True)
             print(Fore.GREEN + "[qoqa] Preparing into install gunicorn")
             subprocess.run([pip, "install", "gunicorn"], check=True)
