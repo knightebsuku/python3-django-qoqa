@@ -42,7 +42,7 @@ def create_changelog(version: str):
         exit()
 
 
-def debian(version: str):
+def debian(version: str, project_name):
     """
     Create debian directory with required files
     """
@@ -52,12 +52,13 @@ def debian(version: str):
     control_file = os.path.join(debian_data, "control.example")
     compat_file = os.path.join(debian_data, "compat.example")
     postint_file = os.path.join(debian_data, "postinst.example")
+    postrm_file = os.path.join(debian_data, "postrm.example")
     service_file = os.path.join(debian_data, "gunicorn.example")
     try:
-        project_name = os.path.basename(os.getcwd())
         shutil.copyfile(rules_file, os.path.join("debian", "rules"))
         shutil.copyfile(compat_file, os.path.join("debian", "compat"))
         shutil.copyfile(postint_file, os.path.join("debian", "postinst"))
+        shutil.copyfile(postrm_file, os.path.join("debian", "postrm"))
         shutil.copyfile(control_file, os.path.join("debian", "control"))
         shutil.copyfile(service_file, os.path.join("debian", project_name + ".service"))
         create_changelog(version)
@@ -68,45 +69,44 @@ def debian(version: str):
         print(Fore.RED + "[qoqa] {}".format(error))
         exit()
     else:
-        template_files()
+        template_files(project_name)
 
 
-def template_files():
+def template_files(project_name):
     """
     Read in files in debian directory and replace variables.
     """
-    parent_directory = os.path.basename(os.getcwd())
     for filename in os.listdir("debian"):
         with open(os.path.join("debian", filename), "r+") as f:
-            text = f.read().replace("$projectname", parent_directory)
+            text = f.read().replace("$projectname", project_name)
             f.seek(0)
             f.truncate()
             f.write(text)
     print(Fore.GREEN + "[qoqa] debian directory setup")
 
 
-def python_setup_file():
+def python_setup_file(project_name):
     """
     Create setup.py file from template and copy to project directory
     """
     setuppy_file = os.path.join(DATA_DIRECTORY, "setup.py.example")
     with open(setuppy_file, "r") as f:
-        text = f.read().replace("$projectname", os.path.basename(os.getcwd()))
-        with open(os.path.join(os.getcwd(), "setup.py"), "w") as setup_file:
+        text = f.read().replace("$projectname", project_name)
+        with open("setup.py", "w") as setup_file:
             setup_file.write(text)
     print(Fore.GREEN + "[qoqa] setup.py file created")
 
 
-def gunicorn_file():
+def gunicorn_file(project_name):
     """
     Create gunicorn file
     """
-    project_directory = os.path.join(os.getcwd(), os.path.basename(os.getcwd()))
+    path = os.path.join(project_name, "start_gunicorn")
     gunicorn = os.path.join(DATA_DIRECTORY, "start_gunicorn.example")
     try:
         with open(gunicorn, "r") as f:
-            text = f.read().replace("$projectname", os.path.basename(os.getcwd()))
-            with open(os.path.join(project_directory, "start_gunicorn"), "w") as g_file:
+            text = f.read().replace("$projectname", project_name)
+            with open(path, "w") as g_file:
                 g_file.write(text)
         print(Fore.GREEN + "[qoqa] start_gunicorn file has being created")
     except NotADirectoryError as error:
@@ -114,12 +114,11 @@ def gunicorn_file():
         exit()
 
 
-def init_file():
+def init_file(project_name):
     """
     Create init.py to treat project as python package
     """
-    project_directory = os.path.join(os.getcwd(), os.path.basename(os.getcwd()))
-    with open(os.path.join(project_directory, "__init__.py"), "w"):
+    with open(os.path.join(project_name, "__init__.py"), "w"):
         pass
 
 
@@ -136,15 +135,14 @@ def requirements():
     exit()
 
 
-def manifest():
+def manifest(project_name):
     """
     Create manifest file
     """
-    data_directory = os.path.join(os.path.dirname(__file__), "data")
-    manifest_file = os.path.join(data_directory, "MANIFEST.in.example")
+    manifest_file = os.path.join(DATA_DIRECTORY, "MANIFEST.in.example")
     with open(manifest_file, "r") as f:
-        text = f.read().replace("$projectname", os.path.basename(os.getcwd()))
-        with open(os.path.join(os.getcwd(), "MANIFEST.in"), "w") as manifest:
+        text = f.read().replace("$projectname", project_name)
+        with open("MANIFEST.in", "w") as manifest:
             manifest.write(text)
     print(Fore.GREEN + "[qoqa] MANIFEST.in file created")
 
@@ -168,27 +166,34 @@ def dpkg(version):
     print(Fore.GREEN + "[qoqa] django project built")
 
 
-def django_app_data():
+def django_app_data(project_name):
     """
     Find all python packages within django project and treat
     them as a django app and add them to setuptools package_data
     """
     valid_django_apps = []
-    project_directory = os.path.basename(os.getcwd())
-    apps = os.walk(os.path.basename(os.getcwd()))
+    print(Fore.GREEN + "[qoqa] project directory is {}".format(project_name))
+
+    apps = os.walk(project_name)
     app_folders = next(apps)[1]
     for folder in app_folders:
-        if folder == project_directory:
+        print(Fore.GREEN + "[qoqa] Looking at folder: {}".format(folder))
+        if folder == project_name or folder == "debian":
+            print(Fore.YELLOW + "[qoqa] Ignoring folder: {}".format(folder))
             continue
-        if os.path.isfile(os.path.join(project_directory, folder, "__init__.py")):
+
+        if os.path.isfile(os.path.join(project_name, folder, "__init__.py")):
             print(Fore.GREEN + "[qoqa] found django app {}".format(folder))
             print(Fore.GREEN + "[qoqa] adding templates and static files")
             valid_django_apps.append("{0}/templates/{0}/*.djhtml".format(folder))
             valid_django_apps.append("{0}/static/{0}/css/*.css".format(folder))
             valid_django_apps.append("{0}/static/{0}/js/*.js".format(folder))
             valid_django_apps.append("{0}/static/{0}/img/*.png".format(folder))
+        else:
+            print(Fore.GREEN + "[qoqa] folder {} is not python package".format(folder))
+
     if valid_django_apps:
-        package_data = {project_directory: valid_django_apps}
+        package_data = {project_name: valid_django_apps}
         with open("setup.py", "r+") as setup_file:
             new_setup_file = io.StringIO()
             for line in setup_file:
@@ -199,5 +204,8 @@ def django_app_data():
             setup_file.seek(0)
             setup_file.write(new_setup_file.getvalue())
             new_setup_file.close()
-    print(Fore.GREEN + "[qoqa] collected and setup files")
-    return True
+        print(Fore.GREEN + "[qoqa] collected and setup files")
+        return True
+    else:
+        print(Fore.RED + "[qoqa] No django apps found")
+        return False

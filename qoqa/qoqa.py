@@ -89,51 +89,52 @@ def create(project_name, template):
     os.chdir(project_name)
     prod_config = database.create("production")
     dev_config = database.create("development")
-    configuration_file("production", prod_config)
     configuration_file("development", dev_config, project_name)
 
+    os.chdir("..")
+    configuration_file("production", prod_config)
+
+    os.chdir(project_name)
     virtualenv.create(project_name, version, template)
 
     print(Fore.GREEN + f"[qoqa] Project {project_name} has been setup")
 
 
-def check_requirements():
-    """
-    Check all requirements are met before creating a debian package
-    """
-    pass
+def new_build(version):
+    """Create the debian package"""
+    build.dpkg(version)
 
 
-def new_build(version: str):
+def prepare(version: str):
     """
     First check that all requirements have been met.
     Build.
     """
-    project_directory = os.path.basename(os.getcwd())
+    project_name = os.path.basename(os.getcwd())
 
     print(Fore.GREEN + "[qoqa] Checking that all requirements are met.")
     if os.path.isfile("setup.py"):
         print(Fore.GREEN + "[qoqa] setup.py file exists")
     else:
         print(Fore.GREEN + "[qoqa] setup.py file does not exist, creating......")
-        build.python_setup_file()
+        build.python_setup_file(project_name)
 
     if os.path.isfile("MANIFEST.in"):
         print(Fore.GREEN + "[qoqa] MANIFEST.in file exists")
     else:
         print(Fore.GREEN + "[qoqa] MANIFEST.in has not been created.")
-        build.manifest()
+        build.manifest(project_name)
 
-    if os.path.isfile(os.path.join(project_directory, "start_gunicorn")):
+    if os.path.isfile(os.path.join(project_name, "start_gunicorn")):
         print(Fore.GREEN + "[qoqa] start_gunicorn file exists")
     else:
         print(Fore.GREEN + "[qoqa] Creating new start_gunicorn script")
-        build.gunicorn_file()
+        build.gunicorn_file(project_name)
 
-    if os.path.isfile(os.path.join(project_directory, "__init__.py")):
+    if os.path.isfile(os.path.join(project_name, "__init__.py")):
         print(Fore.GREEN + "[qoqa] project __init__.py file exists")
     else:
-        build.init_file()
+        build.init_file(project_name)
         print(Fore.GREEN + "[qoqa]  __init__.py file created")
 
     if os.path.isfile("requirements.txt"):
@@ -147,14 +148,15 @@ def new_build(version: str):
         build.update_changelog(version)
     else:
         print(Fore.GREEN + "[qoqa] debian directory does not exist")
-        build.debian(version)
+        build.debian(version, project_name)
     print(Fore.GREEN + "[qoqa] Project ready to be built")
 
     print(Fore.GREEN + "[qoqa] finding django apps and updating static files")
 
-    if build.django_app_data():
-        """Ready to create .deb package"""
-        build.dpkg(version)
+    if build.django_app_data(project_name):
+        print(Fore.GREEN + "[qoqa] project ready to be built")
+    else:
+        print(Fore.RED + "[qoqa] errors prepareing package")
 
 
 def env(env_name, dj_version):

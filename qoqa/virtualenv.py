@@ -111,7 +111,7 @@ class ExtendVenv(venv.EnvBuilder):
         if not self.template_path:
             self.template_path = default_template_zip
         dj_admin_script = os.path.join(context.bin_path, "django-admin")
-        print(Fore.GREEN + "[qoqa] initializing django project....................")
+        print(Fore.GREEN + "[qoqa] initializing django project")
         try:
             subprocess.run(
                 [
