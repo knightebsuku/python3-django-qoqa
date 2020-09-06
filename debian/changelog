@@ -1,4 +1,4 @@
-python3-qoqa (0.9.1) UNRELEASED; urgency=medium
+python3-django-qoqa (1.0.0) UNRELEASED; urgency=medium
   * Enable SSL settings
   * start gunicorn in virtualenv
   * Autodiscovery of django static files
