@@ -11,6 +11,10 @@ else
     mv lib/python3.6/site-packages/$projectname .
 fi
 
+# Move python3.*/site-packages to python3/dist-packages for making packages global for every python version
+mv lib/python3.* lib/python3
+mv lib/python3/site-packages lib/python3/dist-packages
+
 # manage.py must be executable
 chmod +x $projectname/manage.py
 
@@ -45,33 +49,7 @@ then
 fi
 
 
-
-# I dont think qoqa should be responsible for ssl
-# RUN_CERTBOT=false
-# DOMAIN=$projectname
-# if [ $RUN_CERTBOT = true ];
-# then
-#     echo "[qoqq] Checking if certbot is installed"
-#     if type certbot &>/dev/null
-#     then
-# 	echo "[qoqa] Certbot starting......."
-# 	echo "[qoqa] checking if domain certificate already exists"
-# 	if certbot certificates | grep $DOMAIN | grep -v grep &>/dev/null
-# 	then
-# 	    echo "[qoqa] Domin certificate exists, nothin to do"
-# 	else
-# 	    echo "[qoqa] Certificate for domain does not exists"
-# 	    echo "[qoqa] Creating new certificate for $DOMAIN"
-# 	    certbot certonly --standalone -d $projectname
-# 	fi
-#     else
-# 	echo "[qoqa] Certbot not installed yet....please install"
-#     fi
-    
-# fi
-
-
-#Restart systemd service for $projectname
+echo "Starting services for $projectname"
 systemctl start $projectname
 
 

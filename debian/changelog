@@ -1,4 +1,4 @@
-python3-qoqa (0.9.0) UNRELEASED; urgency=medium
+python3-qoqa (0.9.1) UNRELEASED; urgency=medium
   * Enable SSL settings
   * start gunicorn in virtualenv
   * Autodiscovery of django static files
@@ -13,8 +13,10 @@ python3-qoqa (0.9.0) UNRELEASED; urgency=medium
   * check if project config file exists
   * check if service is running during install
   * run manage commands during service startup
+  * Document pull requests
+  * Remove asking for django version
 
- -- lunga <lunga@complex-laptop>  Tue, 03 Apr 2018 10:48:19 +0200
+ -- lunga <lunga@complex-laptop>  Tue, 24 Jul 2018 09:55:15 +0200
 
 python3-qoqa (0.1.1) unstable; urgency=low
 

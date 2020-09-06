@@ -3,7 +3,7 @@ import os
 import subprocess
 import shutil
 
-from colorama import Fore, Style
+from colorama import Fore
 
 
 DATA_DIRECTORY = os.path.join(os.path.dirname(__file__), 'data')
@@ -181,8 +181,8 @@ def dpkg(version):
 
 def django_app_data():
     """
-    Find all python packages within django project and treat them as a django app
-    and add them to setuptools package_data
+    Find all python packages within django project and treat
+    them as a django app and add them to setuptools package_data
     """
     valid_django_apps = []
     project_directory = os.path.basename(os.getcwd())
