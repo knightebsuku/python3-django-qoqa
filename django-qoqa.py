@@ -25,22 +25,16 @@ def main():
     parser_build = subparsers.add_parser("build")
     parser_build.add_argument("--version", help="Version of this release")
 
-    # parser_release = subparsers.add_parser("release")
-    # parser_release.add_argument("--version", help="Version of this release")
-
-    # parser_env = subparsers.add_parser("env")
-    # parser_env.add_argument("name", help="name of virtual environment")
-    # parser_env.add_argument("--version", help="Django version")
+    parser_release = subparsers.add_parser("prepare")
+    parser_release.add_argument("--version", help="Version of this release")
 
     args = parser.parse_args()
     if args.commands == "new":
         qoqa.create(args.name, args.template)
     elif args.commands == "build":
         qoqa.new_build(args.version)
-    # elif args.commands == "release":
-    #     qoqa.release(args.version)
-    # elif args.action[0] == "env":
-    #     qoqa.env(args.action[1])
+    elif args.commands == "prepare":
+        qoqa.prepare(args.version)
     else:
         print(Fore.RED + "[qoqa] Unknown argument use either new, or build")
         exit()
