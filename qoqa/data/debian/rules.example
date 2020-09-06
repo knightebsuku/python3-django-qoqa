@@ -2,10 +2,18 @@
 
 DPKG_EXPORT_BUILDFLAGS = 1
 
+
 %:
 	dh $@ --with python-virtualenv
 
+.PHONY: override_dh_strip override_dh_shlibdeps
+
 override_dh_virtualenv:
 	dh_virtualenv --python /usr/bin/python3 \
-		--setuptools --builtin-venv --extra-pip-arg='--no-use-wheel'
+		--builtin-venv --extra-pip-arg='--no-binary=psycopg2'
 
+override_dh_strip:
+	dh_strip --exclude=cffi --exclude=PIL --exclude=Pillow --exclude=pandas --exclude=reportlab --exclude=numpy
+
+override_dh_shlibdeps:
+	dh_shlibdeps -X/x86/ -X/numpy.libs/ -X/PIL/ -X/psycopg2/ -X/Pillow.libs/ -X/reportlab.libs/ -X/pandas/_libs -X/numpy/ -X/pandas/ -X/reportlab/
