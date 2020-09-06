@@ -5,19 +5,20 @@ cd /opt/venvs/$projectname
 # Move application to top level project directory
 if [ -d "$projectname" ]
 then
-    cp -r lib/python3.6/site-packages/$projectname/** $projectname/
-    rm -rf lib/python3.6/site-packages/$projectname
+    cp -r lib/python3.*/site-packages/$projectname/** $projectname/
+    rm -rf lib/python3.*/site-packages/$projectname
 else
-    mv lib/python3.6/site-packages/$projectname .
+    mv lib/python3.*/site-packages/$projectname .
 fi
 
-# Move python3.*/site-packages to python3/dist-packages for making packages global for every python version
-mv lib/python3.* lib/python3
-mv lib/python3/site-packages lib/python3/dist-packages
 
 # manage.py must be executable
 chmod +x $projectname/manage.py
 
+#remove duplicates
+rm $projectname/settings.py
+rm $projectname/urls.py
+rm $projectname/wsgi.py
 
 #move start_gunicorn to env/bin directory and make execuatble
 mv $projectname/start_gunicorn bin/
@@ -29,15 +30,19 @@ rm -rf $projectname/__pycache__/
 
 
 # Create logs directory
-if [ ! -d "$projectname/logs" ]
+if [ ! -d "logs" ]
 then
-    mkdir /opt/venvs/$projectname/logs
+    mkdir logs
 
 fi
 
 
 # Create user webapp and change project permissions to webapp user
-adduser --disabled-password --gecos "" webapp
+if id webapp >/dev/null 2>&1; then
+        echo "webapp already user exists"
+else
+        adduser --disabled-password --gecos "" webapp
+fi
 chown -R webapp:webapp /opt/venvs/$projectname
 
 

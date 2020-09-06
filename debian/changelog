@@ -6,7 +6,6 @@ python3-qoqa (0.9.1) UNRELEASED; urgency=medium
   * Add start_gunicorn to data files
   * Remove manual resetting of colorama
   * Ability to create only virtualenv
-  * 
   * Include template.zip in setup.py
   * choose django vserion in command line
   * Fix creating only virtualenv

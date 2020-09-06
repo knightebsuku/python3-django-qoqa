@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Remove directory
+rm /opt/venvs/$projectname
+
+
+# remove systemd files
+systemctl stop $projectname
+systemctl disable $projectname
+
